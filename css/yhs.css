@@ -642,6 +642,7 @@
     border-bottom: 2px dashed #a1887f; /* Línea punteada en tono madera */
     padding-bottom: 5px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Sombra de texto sutil */
+    margin-bottom: 15px;
 }
 .yokai-hunters-society.sheet.actor .roll-components-group {
     display: flex;
@@ -663,13 +664,6 @@
     transition: all 0.2s ease;
     color: #3e2723; /* Marrón oscuro para el texto */
 }
-/* Eliminado el efecto de hover */
-/*
-.yokai-hunters-society.sheet.actor .roll-component-tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-}
-*/
 
 .yokai-hunters-society.sheet.actor .roll-component-tile.discarded-die {
     text-decoration: line-through;
@@ -689,8 +683,8 @@
     content: '👹'; /* Icono de Oni o diablo */
     position: absolute;
     top: -10px;
-    right: -10px;
-    font-size: 13px; /* Converted from 0.8em */
+    right: -15px;
+    font-size: 25px; /* Converted from 0.8em */
     opacity: 0.9;
     filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)); /* Sombra para el icono */
 }
