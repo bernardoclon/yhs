@@ -1,0 +1,163 @@
+<form class="sheet-form" autocomplete="off">
+    <section class="sheet-content-area">
+        <div class="main-container">
+            <!-- New flex container for main content -->
+            <div class="main-content-flex-container section-spacing">
+                <!-- Left Column Content -->
+                <div class="left-column-content main-content-flex-item">
+                    <!-- Character Header Section with Image -->
+                    <div class="header-grid-with-image">
+                        <div class="character-image-container">
+                            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="Imagen del personaje"/>
+                        </div>
+                        <div class="section-panel-default character-name-panel">
+                            <label for="characterName" class="label-text">Nombre</label>
+                            <input type="text" name="name" value="{{actor.name}}" placeholder="Nombre del Personaje"
+                                   class="input-field" data-field="name">
+                        </div>
+                        <div class="section-panel-default character-age-panel">
+                            <label for="age" class="label-text">Edad</label>
+                            <input type="number" name="system.age" value="{{system.age}}" min="0"
+                                   class="input-field" data-field="system.age">
+                        </div>
+                    </div>
+
+                    <!-- Look Section -->
+                    <div class="section-panel-default section-spacing">
+                        <label for="look" class="label-text">Apariencia</label>
+                        <textarea name="system.look" rows="3"
+                                  class="input-field textarea-field"
+                                  placeholder="Describe la apariencia de tu personaje..." data-field="system.look">{{system.look}}</textarea>
+                    </div>
+
+                    <!-- Background Section -->
+                    <div class="section-panel-default section-spacing">
+                        <label for="background" class="label-text">Trasfondo</label>
+                        <textarea name="system.background" rows="3"
+                                  class="input-field textarea-field"
+                                  placeholder="Describe el trasfondo de tu personaje..." data-field="system.background">{{system.background}}</textarea>
+                    </div>
+
+                    <!-- Curse Resistance Section -->
+                    <div class="section-curse-resistance section-spacing">
+                        <h2 class="section-title text-primary">Resistencia a la Maldición</h2>
+                        <div class="curse-resistance-checkboxes">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="curseResistance1-{{actor._id}}" name="system.curseResistance.1" {{checked system.curseResistance.[1]}} class="curse-checkbox-hidden" data-field="system.curseResistance.1">
+                                <label for="curseResistance1-{{actor._id}}" class="curse-visual-checkbox">
+                                    <img src="systems/yokai-hunters-society/art/doll.png" class="curse-icon-img" alt="Curse Icon 1">
+                                </label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="curseResistance2-{{actor._id}}" name="system.curseResistance.2" {{checked system.curseResistance.[2]}} class="curse-checkbox-hidden" data-field="system.curseResistance.2">
+                                <label for="curseResistance2-{{actor._id}}" class="curse-visual-checkbox">
+                                    <img src="systems/yokai-hunters-society/art/doll.png" class="curse-icon-img" alt="Curse Icon 2">
+                                </label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="curseResistance3-{{actor._id}}" name="system.curseResistance.3" {{checked system.curseResistance.[3]}} class="curse-checkbox-hidden" data-field="system.curseResistance.3">
+                                <label for="curseResistance3-{{actor._id}}" class="curse-visual-checkbox">
+                                    <img src="systems/yokai-hunters-society/art/doll.png" class="curse-icon-img" alt="Curse Icon 3">
+                                </label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="curseResistance4-{{actor._id}}" name="system.curseResistance.4" {{checked system.curseResistance.[4]}} class="curse-checkbox-hidden" data-field="system.curseResistance.4">
+                                <label for="curseResistance4-{{actor._id}}" class="curse-visual-checkbox">
+                                    <img src="systems/yokai-hunters-society/art/doll.png" class="curse-icon-img" alt="Curse Icon 4">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attributes, Health, and Money Section -->
+                    <div class="main-stats-container">
+                        <!-- Attributes Section -->
+                        <div class="section-attributes main-stats-item">
+                            <h2 class="section-title text-on-dark">Atributos</h2>
+                            <div class="attributes-grid">
+                                <div class="attribute-card">
+                                    <label class="label-text rollable-attribute" data-attribute="courage">Coraje</label>
+                                    <input type="number" name="system.attributes.courage.value" value="{{system.attributes.courage.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.courage.value">
+                                </div>
+                                <div class="attribute-card">
+                                    <label class="label-text rollable-attribute" data-attribute="selfControl">Autocontrol</label>
+                                    <input type="number" name="system.attributes.selfControl.value" value="{{system.attributes.selfControl.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.selfControl.value">
+                                </div>
+                                <div class="attribute-card">
+                                    <label class="label-text rollable-attribute" data-attribute="wisdom">Sabiduría</label>
+                                    <input type="number" name="system.attributes.wisdom.value" value="{{system.attributes.wisdom.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.wisdom.value">
+                                </div>
+                                <div class="attribute-card">
+                                    <label class="label-text rollable-attribute" data-attribute="sharpness">Agudeza</label>
+                                    <input type="number" name="system.attributes.sharpness.value" value="{{system.attributes.sharpness.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.sharpness.value">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- HP and Money Wrapper -->
+                        <div class="hp-money-wrapper main-stats-item">
+                            <!-- Health Section -->
+                            <div class="section-hp">
+                                <h2 class="section-title text-primary">Salud</h2>
+                                <div class="hp-money-content">
+                                    <div class="hp-input-group">
+                                        <label for="healthValue" class="label-text">Actual</label>
+                                        <input type="number" name="system.health.value" value="{{system.health.value}}" class="hp-money-input" data-dtype="Number" data-field="system.health.value">
+                                    </div>
+                                    <span class="hp-separator text-primary">/</span>
+                                    <div class="hp-input-group">
+                                        <label for="healthMax" class="label-text">Máx</label>
+                                        <input type="number" name="system.health.max" value="{{system.health.max}}" class="hp-money-input" data-dtype="Number" data-field="system.health.max">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Money Section -->
+                            <div class="section-money">
+                                <h2 class="section-title text-primary">Dinero</h2>
+                                <div class="hp-money-content">
+                                    <div class="hp-input-group">
+                                        <label for="money" class="label-text">Cantidad</label>
+                                        <input type="number" name="system.money" value="{{system.money}}" class="hp-money-input" data-dtype="Number" data-field="system.money">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Section -->
+                <div class="section-equipment main-content-flex-item">
+                    <h2 class="section-title text-on-dark">Equipo</h2>
+                    <!-- Header for Inventory Columns -->
+                    <div class="equipment-grid-header">
+                        <span>Nombre</span>
+                        <span>Bonus</span>
+                        <div class="flex justify-end">
+                            <button type="button" id="add-item" class="add-item-btn">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                    <div id="inventory-list" class="space-y-3">
+                        {{#each actor.items as |item id|}}
+                        <div class="equipment-item-row" data-item-id="{{item._id}}">
+                            <input type="text" name="item.{{item._id}}.name" value="{{item.name}}" class="item-input item-name-clickable" placeholder="Objeto" readonly>
+                            <input type="number" name="item.{{item._id}}.system.bonus" value="{{item.system.bonus}}" min="-10" max="10" class="item-input" placeholder="Bonus" readonly>
+                            <div class="item-buttons">
+                                <button type="button" class="edit-item-btn" data-item-id="{{item._id}}">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                                <button type="button" class="remove-item-btn" data-item-id="{{item._id}}">X</button>
+                            </div>
+                            <div class="item-description-toggle hidden">
+                                <p>{{item.system.description}}</p>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
