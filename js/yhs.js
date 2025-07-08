@@ -16,8 +16,8 @@ class YokaiHunterSheet extends ActorSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: "systems/yokai-hunters-society/templates/actor-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "actor"],
-            width: 700,
-            height: 610,
+            width: 730,
+            height: 660,
             resizable: false, // Disable sheet resizing
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
         });
@@ -625,7 +625,7 @@ class YokaiNPCSheet extends ActorSheet {
             template: "systems/yokai-hunters-society/templates/npc-yokai-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "actor", "npc-yokai"],
             width: 375,
-            height: 685,
+            height: 710,
             resizable: false, // Disable sheet resizing
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
         });
