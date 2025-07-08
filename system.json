@@ -22,8 +22,8 @@
       "path": "lang/es.json"
     }
   ],
-  "url": "https://github.com/your-repo/yokai-hunters-society",
+  "url": "https://github.com/your-repo/yokai-hunters-societ",
   "manifest": "https://github.com/bernardoclon/yhs/main/system.json",
-  "download": "https://github.com/bernardoclon/yhs/main/yokai-hunters-society.zip",
+  "download": "https://github.com/bernardoclon/yhs/archive/refs/tags/Publicado.zip",
   "background": "systems/yokai-hunters-society/art/banner.jpg"
 }
