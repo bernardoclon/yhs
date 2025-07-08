@@ -1,0 +1,75 @@
+{
+  "Actor": {
+    "types": ["hunter", "npcYokai"],
+    "templates": {
+      "base": {
+        "name": "",
+        "age": 0,
+        "look": "",
+        "background": "",
+        "curseResistance": {
+          "1": false,
+          "2": false,
+          "3": false,
+          "4": false
+        },
+        "attributes": {
+          "courage": { "value": 0 },
+          "selfControl": { "value": 0 },
+          "wisdom": { "value": 0 },
+          "sharpness": { "value": 0 }
+        },
+        "health": {
+          "value": 10,
+          "max": 15
+        },
+        "money": 100,
+        "equipment": []
+      },
+      "hunter": {
+        "img": "icons/svg/mystery-man.svg",
+        "token": {
+          "img": "icons/svg/mystery-man.svg"
+        },
+        "inheritedTemplates": ["base"]
+      },
+      "npcYokai": {
+        "img": "icons/svg/mystery-man.svg",
+        "token": {
+          "img": "icons/svg/mystery-man.svg"
+        },
+        "inheritedTemplates": ["base"],
+        "system": {
+          "description": "",
+          "level": 0,
+          "movimientos": []
+        }
+      }
+    }
+  },
+  "Item": {
+    "types": ["equipment", "gear", "movimiento"],
+    "templates": {
+      "base": {
+        "name": "",
+        "description": "",
+        "bonus": 0
+      },
+      "equipment": {
+        "img": "icons/svg/item-bag.svg",
+        "inheritedTemplates": ["base"]
+      },
+      "gear": {
+        "img": "icons/svg/bag.svg",
+        "inheritedTemplates": ["base"]
+      },
+      "movimiento": {
+        "img": "icons/svg/book.svg",
+        "inheritedTemplates": ["base"],
+        "system": {
+          "description": ""
+        }
+      }
+    }
+  }
+}
