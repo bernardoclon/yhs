@@ -1,4 +1,6 @@
-Yokai Hunters Society: Donde el Antiguo Japón se Encuentra con lo Sobrenatural
+# Yokai Hunters Society: 
+
+Donde el Antiguo Japón se Encuentra con lo Sobrenatural
 Adéntrate en un mundo donde las sombras de una era pasada se entrelazan con los susurros de lo sobrenatural. Yokai Hunters Society es un sistema de juego de rol que te transporta a un Japón feudal alternativo, un lugar de belleza serena y peligros ocultos, donde los mitos y las leyendas cobran vida en la forma de aterradores Yokai.
 
 En este sistema, no eres un simple aventurero, sino un Cazador de Yokai, un alma valiente —o quizás desesperada— que se alza contra las criaturas que acechan en la oscuridad. Tu misión es proteger a la humanidad de las incursiones de estos seres, que van desde los traviesos Kitsune hasta los temibles Oni, cada uno con sus propias debilidades y fortalezas.
