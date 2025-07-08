@@ -8,7 +8,6 @@
 
 /* Estilos generales para las ventanas de la hoja */
 .yokai-hunters-society.sheet .window-content {
-    background: url('systems/yokai-hunters-society/assets/background-texture.webp') repeat; /* Textura de papel o tela */
     background-color: #f5f0e1; /* Fondo claro y cálido */
     font-family: 'Noto Sans JP', sans-serif; /* Fuente principal japonesa */
     color: #3e2723; /* Marrón oscuro para el texto */
@@ -16,7 +15,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden; /* Evita que el contenido se desborde de la ventana */
-    border-image: url('systems/yokai-hunters-society/assets/border-pattern.webp') 8 / 8px repeat; /* Patrón de borde decorativo decorativo más fino */
+    border-image: url('../art/border.jpg') 8 / 8px round;
     border-width: 8px; /* Más fino */
     border-style: solid;
 }
@@ -611,7 +610,6 @@
     gap: 10px; /* Más espacio entre elementos */
     padding: 15px; /* Más padding */
     border: 3px solid #6d4c41; /* Borde más grueso y en tono madera/tierra */
-    background: url('https://placehold.co/600x400/f5f0e1/3e2723?text=Old+Paper+Texture') repeat; /* Textura de papel antiguo */
     background-color: #f5f0e1; /* Fondo claro y cálido */
     border-radius: 10px; /* Bordes más redondeados */
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
