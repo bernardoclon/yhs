@@ -17,3 +17,5 @@ En este sistema, no eres un simple aventurero, sino un **Cazador de Yokai**, un 
 * **Diseño Visual Atractivo:** Las hojas de personaje y los diálogos de tirada están meticulosamente diseñados con una estética japonesa antigua. Los bordes que simulan madera, las texturas de papel envejecido y los colores terrosos, combinados con toques de rojo vibrante, crean una experiencia visual coherente y cautivadora.
 
 Prepárate para forjar tu leyenda en un Japón asediado por lo desconocido. ¿Serás un faro de esperanza o sucumbirás a la oscuridad? En **Yokai Hunters Society**, el destino está en tus manos... y en los dados.
+
+![Whisk_wq1mjcwmmm](https://github.com/user-attachments/assets/532ff689-ffe4-4d51-91f9-9af21cf50a44)
