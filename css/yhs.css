@@ -8,7 +8,6 @@
 
 /* Estilos generales para las ventanas de la hoja */
 .yokai-hunters-society.sheet .window-content {
-    background: url('systems/yokai-hunters-society/assets/background-texture.webp') repeat; /* Textura de papel o tela */
     background-color: #f5f0e1; /* Fondo claro y cálido */
     font-family: 'Noto Sans JP', sans-serif; /* Fuente principal japonesa */
     color: #3e2723; /* Marrón oscuro para el texto */
@@ -16,7 +15,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden; /* Evita que el contenido se desborde de la ventana */
-    border-image: url('systems/yokai-hunters-society/assets/border-pattern.webp') 8 / 8px repeat; /* Patrón de borde decorativo decorativo más fino */
+    border-image: url('../art/border.jpg') 8 / 8px round;
     border-width: 8px; /* Más fino */
     border-style: solid;
 }
@@ -31,10 +30,9 @@
 /* Área de contenido principal de la hoja */
 .yokai-hunters-society .sheet-content-area,
 .yokai-hunters-society .sheet-body { /* Aplicado a actor, ítem y NPC */
-    flex: 1; /* Permite que esta sección crezca y ocupe el espacio disponible */
+    flex: 1 1 0%; /* Equivalent to flex: 1; for absolute sizing, we need a base */
     display: flex;
     flex-direction: column;
-    /* ELIMINADO: overflow-y: auto; de aquí. El scroll será interno en las listas y textareas. */
     box-sizing: border-box;
     scrollbar-width: thin; /* Firefox */
     scrollbar-color: #a1887f #f1f1f1; /* Firefox */
@@ -47,7 +45,7 @@
     flex-direction: column; /* Apila las columnas verticalmente en pantallas pequeñas */
     gap: 6px; /* Aún más reducido */
     padding: 3px; /* Aún más reducido */
-    flex: 1; /* Permite crecer y ocupar la altura de sheet-content-area */
+    flex: 1 1 0%; /* Equivalent to flex: 1 */
     box-sizing: border-box;
 }
 
@@ -56,12 +54,12 @@
     display: flex;
     flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente línea */
     gap: 8px; /* Aún más reducido */
-    flex: 1; /* Permite que este contenedor crezca y ocupe la altura de main-container */
+    flex: 1 1 0%; /* Equivalent to flex: 1 */
     align-items: stretch; /* Hace que los elementos hijos se estiren para llenar la altura */
 }
 
 .yokai-hunters-society .left-column-content {
-    flex: 2; /* La columna izquierda ocupa más espacio */
+    flex: 2 1 260px; /* Equivalent to flex: 2; min-width: 260px; */
     min-width: 260px; /* Aún más reducido */
     display: flex;
     flex-direction: column;
@@ -70,12 +68,11 @@
 }
 
 .yokai-hunters-society .section-equipment {
-    flex: 2; /* AJUSTADO: La sección de equipo ahora ocupa un espacio más equilibrado */
-    min-width: 200px; /* Aún más reducido */
-    display: flex; /* Asegura que sea un contenedor flex para que #inventory-list pueda scroll */
     flex-direction: column;
-    min-height: 0; /* Crucial para flex items con overflow */
-    /* No se necesita flex: 1 aquí, ya se estira por align-items: stretch del padre */
+    min-width: 318px; /* Aún más reducido */
+    min-height: 600px; /* Crucial para flex items con overflow */
+    max-height: 600px;/* No se necesita flex: 1 aquí, ya se estira por align-items: stretch del padre */
+    overflow-y: auto; /* Añade barra de desplazamiento si el contenido es muy largo */
 }
 
 /* Paneles de sección - Estilo común para bloques de contenido */
@@ -110,7 +107,8 @@
 .yokai-hunters-society .header-grid-with-image,
 .yokai-hunters-society .item-header-grid-with-image {
     display: grid;
-    grid-template-columns: 70px 3fr 1fr; /* Modificado: Nombre 3fr, Edad 1fr */
+    /* Ajustado para dar más espacio al nombre y asegurar que la edad esté a la derecha */
+    grid-template-columns: 70px 1fr 40px; /* Imagen (70px), Nombre (1fr - toma el espacio restante), Edad (100px) */
     gap: 8px; /* Aún más reducido */
     align-items: center;
     margin-bottom: 8px; /* Aún más reducido */
@@ -119,6 +117,7 @@
     border-radius: 0; /* ELIMINADO: Radio de borde que contribuía al efecto cuadrado */
     padding: 0; /* ELIMINADO: Padding que contribuía al efecto cuadrado */
 }
+
 
 /* Estilos para los paneles dentro de la cuadrícula del encabezado para eliminar bordes y fondos */
 .yokai-hunters-society .header-grid-with-image .section-panel-default,
@@ -155,7 +154,7 @@
 
 .yokai-hunters-society .character-age-panel {
     grid-column: 3; /* Asegura que la edad esté en la tercera columna */
-    text-align: right; /* Alinea el contenido a la derecha */
+    text-align: center; /* Alinea el contenido a la derecha */
     justify-self: end; /* Alinea el panel a la derecha dentro de su celda de cuadrícula */
 }
 
@@ -166,7 +165,7 @@
     margin-bottom: 2px; /* Muy reducido */
     display: block;
     color: #4e342e;
-    font-size: 0.85em; /* Aún más reducido */
+    font-size: 13px; /* Converted from 0.85em (assuming base 16px font size) */
 }
 
 .yokai-hunters-society .input-field,
@@ -179,7 +178,7 @@
     border-radius: 1px; /* Aún más reducido */
     box-sizing: border-box;
     background-color: #fffaf0;
-    font-size: 0.8em; /* Aún más reducido */
+    font-size: 13px; /* Converted from 0.8em */
     color: #3e2723;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -201,7 +200,7 @@
 /* Títulos de sección */
 .yokai-hunters-society .section-title {
     font-family: 'Merriweather', serif;
-    font-size: 1.05em; /* Aún más reducido */
+    font-size: 16px; /* Converted from 1.05em */
     border-bottom: 1px solid #b71c1c; /* Muy fino */
     padding-bottom: 2px; /* Muy reducido */
     margin-bottom: 8px; /* Aún más reducido */
@@ -224,8 +223,8 @@
 /* Lista de Inventario/Equipo/Movimientos */
 .yokai-hunters-society #inventory-list,
 .yokai-hunters-society #movimientos-list {
-    flex: 1; /* Permite crecer dentro de su padre flex */
-    min-height: 0; /* Crucial para flex items con overflow */
+    flex: 1 1 0%; /* Equivalent to flex: 1 */
+    min-height: 528px; /* Crucial para flex items con overflow */
     overflow-y: auto; /* Añade barra de desplazamiento si el contenido se desborda */
     border: 1px solid #d7ccc8;
     padding-right: 2px; /* Aún más reducido */
@@ -239,8 +238,8 @@
 /* Encabezado para las columnas del inventario (general) */
 .yokai-hunters-society .equipment-grid-header {
     display: grid;
-    grid-template-columns: 1fr 40px 50px; /* Modificado: Bonus 40px, Botones 50px para alineación */
-    gap: 4px; /* Aún más reducido */
+    grid-template-columns: auto 40px 50px; /* Modified: Name (auto), Bonus 40px, Buttons 50px for alignment */
+    gap: 10px; /* Aún más reducido */
     align-items: center;
     padding: 2px 10px 2px 10px; /* Restaurado padding original */
     background-color: #a1887f;
@@ -249,7 +248,7 @@
     color: white;
     border-radius: 2px 2px 0 0; /* Aún más reducido */
     text-transform: uppercase;
-    font-size: 0.75em; /* Aún más reducido */
+    font-size: 12px; /* Converted from 0.75em */
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Aún más sutil */
 }
 
@@ -269,8 +268,8 @@
 /* Filas individuales de ítems (general) */
 .yokai-hunters-society .equipment-item-row { /* Eliminado .movements-item-row de aquí */
     display: grid;
-    grid-template-columns: 1fr 40px 50px; /* Modificado: Bonus 40px, Botones 50px para alineación */
-    gap: 4px; /* Aún más reducido */
+    grid-template-columns: auto 40px 50px; /* Modified: Name (auto), Bonus 40px, Buttons 50px for alignment */
+    gap: 10px; /* Aún más reducido */
     align-items: center;
     background-color: #efebe9;
     border: 1px solid #d7ccc8;
@@ -294,7 +293,7 @@
     flex-grow: 1;
     padding: 0;
     text-align: left;
-    font-size: 0.8em; /* Aún más reducido */
+    font-size: 13px; /* Converted from 0.8em */
     color: #3e2723;
     box-shadow: none; /* ELIMINADO: Sombra de caja */
 }
@@ -333,7 +332,7 @@
     border-radius: 2px; /* Aún más reducido */
     padding: 2px 5px; /* Aún más reducido */
     cursor: pointer;
-    font-size: 0.7em; /* Aún más reducido */
+    font-size: 12px; /* Aún más reducido */
     transition: background-color 0.2s ease, transform 0.1s ease;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08); /* Aún más sutil */
 }
@@ -374,8 +373,8 @@
     border-bottom-left-radius: 2px; /* Aún más reducido */
     border-bottom-right-radius: 2px; /* Aún más reducido */
     margin-top: -2px; /* Aún más reducido */
-    font-size: 0.75em; /* Aún más reducido */
-    line-height: 1.2; /* Aún más compacto */
+    font-size: 12px; /* Converted from 0.75em */
+    line-height: 15px; /* Converted from 1.2 */
     color: #5d4037;
 }
 
@@ -423,7 +422,7 @@
     font-weight: bold;
     color: #4e342e;
     text-transform: uppercase;
-    font-size: 0.8em; /* Aún más reducido */
+    font-size: 13px; /* Converted from 0.8em */
     transition: background-color 0.2s ease, color 0.2s ease;
     border: 1px solid #a1887f;
     border-bottom: none;
@@ -441,12 +440,13 @@
 /* Para atributos del personaje (Coraje, Autocontrol, etc.) */
 .yokai-hunters-society .attributes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Aún más reducido */
+    grid-template-columns: repeat(auto-fill, 100px); /* Converted minmax(80px, 1fr) to fixed 80px for absolute */
     gap: 8px; /* Aún más reducido */
     margin-bottom: 8px; /* Aún más reducido */
 }
 
 .yokai-hunters-society .attribute-card {
+    justify-content: center;
     text-align: center;
     background-color: #efebe9;
     border: 1px solid #d7ccc8;
@@ -456,9 +456,20 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.yokai-hunters-society .attribute-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08); /* Aún más sutil */
+.yokai-hunters-society .attribute-card label {
+    cursor: pointer; /* Make the label itself show the pointer */
+    display: block; /* Ensure the label takes up its own line for a better click area */
+    width: 100%; /* Make it span the width of the card for a larger clickable area */
+    font-weight: bold; /* Keep it bold as per .label-text */
+    color: #4e342e; /* Keep original color */
+    font-size: 13px; /* Keep original size */
+    margin-bottom: 2px; /* Keep original margin */
+    transition: color 0.2s ease, text-decoration 0.2s ease; /* Add transition for hover effects on the label */
+}
+
+.yokai-hunters-society .attribute-card label:hover {
+    color: #b71c1c; /* Change text color on hover to red */
+    text-decoration: underline; /* Add underline on hover */
 }
 
 /* Sección de Salud y Dinero */
@@ -466,17 +477,18 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px; /* Aún más reducido */
-    flex: 1;
+    flex: 1 1 0%;
 }
 
 .yokai-hunters-society .section-attributes {
-    flex: 2;
+    flex: 2 1 180px; /* Equivalent to flex: 2; min-width: 180px; */
+    align-items: center; /* Alinea los elementos al centro */
     min-width: 180px; /* Aún más reducido */
     box-sizing: border-box;
 }
 
 .yokai-hunters-society .hp-money-wrapper {
-    flex: 1;
+    flex: 1 1 140px; /* Equivalent to flex: 1; min-width: 140px; */
     min-width: 140px; /* Aún más reducido */
     display: flex;
     flex-direction: column;
@@ -492,7 +504,7 @@
     padding: 8px; /* Aún más reducido */
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08); /* Aún más sutil */
     box-sizing: border-box;
-    flex: 1;
+    flex: 1 1 0%;
 }
 
 .yokai-hunters-society .hp-money-content {
@@ -516,12 +528,12 @@
     border: 1px solid #a1887f;
     border-radius: 2px; /* Aún más reducido */
     background-color: #fffaf0;
-    font-size: 0.85em; /* Aún más reducido */
+    font-size: 14px; /* Converted from 0.85em */
     font-weight: bold;
 }
 
 .yokai-hunters-society .hp-separator {
-    font-size: 1.1em; /* Aún más reducido */
+    font-size: 18px; /* Converted from 1.1em */
     font-weight: bold;
     color: #b71c1c;
 }
@@ -598,7 +610,6 @@
     gap: 10px; /* Más espacio entre elementos */
     padding: 15px; /* Más padding */
     border: 3px solid #6d4c41; /* Borde más grueso y en tono madera/tierra */
-    background: url('https://placehold.co/600x400/f5f0e1/3e2723?text=Old+Paper+Texture') repeat; /* Textura de papel antiguo */
     background-color: #f5f0e1; /* Fondo claro y cálido */
     border-radius: 10px; /* Bordes más redondeados */
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
@@ -626,11 +637,12 @@
     color: #b71c1c; /* Rojo oscuro */
     margin-bottom: 5px; /* Más espacio */
     text-transform: uppercase;
-    font-size: 1.2em; /* Tamaño de etiqueta más grande */
+    font-size: 19px; /* Converted from 1.2em */
     letter-spacing: 1px; /* Más espaciado entre letras */
     border-bottom: 2px dashed #a1887f; /* Línea punteada en tono madera */
     padding-bottom: 5px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Sombra de texto sutil */
+    margin-bottom: 15px;
 }
 .yokai-hunters-society.sheet.actor .roll-components-group {
     display: flex;
@@ -652,13 +664,6 @@
     transition: all 0.2s ease;
     color: #3e2723; /* Marrón oscuro para el texto */
 }
-/* Eliminado el efecto de hover */
-/*
-.yokai-hunters-society.sheet.actor .roll-component-tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-}
-*/
 
 .yokai-hunters-society.sheet.actor .roll-component-tile.discarded-die {
     text-decoration: line-through;
@@ -679,13 +684,13 @@
     position: absolute;
     top: -10px;
     right: -10px;
-    font-size: 0.8em; /* Tamaño del icono */
+    font-size: 20px; /* Converted from 0.8em */
     opacity: 0.9;
     filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)); /* Sombra para el icono */
 }
 
 .yokai-hunters-society.sheet.actor .roll-total-label {
-    font-size: 1.3em; /* Tamaño de la etiqueta "Resultado Total" más grande */
+    font-size: 21px; /* Converted from 1.3em */
     font-weight: bold;
     color: #6d4c41; /* Tono de madera */
     margin-top: 15px; /* Más espacio */
@@ -695,11 +700,12 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px; /* Más espacio */
 }
 .yokai-hunters-society.sheet.actor .roll-component-tile.total-result {
     background: linear-gradient(to right, #880e4f, #b71c1c); /* Degradado más profundo para el resultado final */
     color: white;
-    font-size: 32px; /* Tamaño del número de resultado total mucho más grande */
+    font-size: 24px; /* Tamaño del número de resultado total mucho más grande */
     padding: 10px 20px; /* Más padding */
     border-radius: 8px; /* Bordes más redondeados */
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4); /* Sombra más fuerte */
@@ -708,7 +714,7 @@
 }
 .yokai-hunters-society.sheet.actor .roll-outcome-message {
     font-family: 'Merriweather', serif;
-    font-size: 1.8em; /* Tamaño del mensaje de resultado aún más grande */
+    font-size: 22px; /* Converted from 1.8em */
     font-weight: bold;
     text-align: center;
     margin-top: 15px; /* Más espacio */
@@ -744,8 +750,9 @@
     border: 2px solid #b71c1c; /* Borde rojo más fuerte */
     background-color: #ffebee; /* Fondo rosa claro */
     border-radius: 6px; /* Bordes más redondeados */
-    font-size: 1em; /* Tamaño de fuente ligeramente más grande */
+    font-size: 16px; /* Converted from 1em */
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
 /* Estilos específicos del Diálogo de Tirada */
@@ -763,7 +770,7 @@
 }
 
 .app.window-app.dialog .window-title {
-    flex: 1; /* Permite que el título ocupe el espacio disponible */
+    flex: 1 1 0%; /* Equivalent to flex: 1 */
     text-align: center;
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
@@ -821,7 +828,7 @@
     color: #5d4037;
     margin-bottom: 2px; /* Muy reducido */
     display: block;
-    font-size: 0.85em; /* Aún más reducido */
+    font-size: 13px; /* Converted from 0.85em */
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container .form-fields {
     display: flex;
@@ -871,7 +878,7 @@
     align-items: center; /* Asegura que el radio y el texto estén alineados verticalmente */
     gap: 6px; /* Espacio entre el radio y el texto */
     font-weight: normal; /* Asegura que el texto no sea negrita si la etiqueta padre lo hace */
-    font-size: 0.9em; /* Ligeramente aumentado para mayor legibilidad */
+    font-size: 14px; /* Converted from 0.9em */
     padding: 3px 8px; /* Añadido padding para mejorar el área clicable y la estética */
     border-radius: 4px; /* Bordes redondeados sutiles */
     transition: background-color 0.2s ease;
@@ -891,7 +898,7 @@
     gap: 8px; /* Aumentado el espacio entre el checkbox y el texto para el nuevo tamaño */
     cursor: pointer;
     font-weight: normal;
-    font-size: 0.9em; /* Ligeramente aumentado */
+    font-size: 14px; /* Converted from 0.9em */
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container .curse-checkbox-dialog {
     display: none; /* Oculta el checkbox por defecto */
@@ -933,7 +940,7 @@
     border: 1px solid #a1887f;
     border-radius: 2px; /* Aún más reducido */
     background-color: #fffaf0;
-    font-size: 0.8em; /* Aún más reducido */
+    font-size: 13px; /* Converted from 0.8em */
     color: #3e2723;
     text-align: center; /* Centrar el texto del select */
 }
@@ -968,7 +975,7 @@
 }
 
 .app.window-app.dialog .dialog-button i {
-    font-size: 0.8em; /* Aún más reducido */
+    font-size: 13px; /* Converted from 0.8em */
 }
 
 .app.window-app.dialog .dialog-button:hover {
@@ -990,14 +997,14 @@
 .yokai-hunters-society.sheet.actor.npc-yokai .section-panel-default.section-movimientos { /* Selector corregido */
     min-height: 315px; /* Crucial para flex items con overflow */
     max-height: 315px; /* Crucial para flex items con overflow */
-    padding: auto; /* Eliminar el padding del contenedor principal de movimientos */
+    padding: 0; /* Eliminar el padding del contenedor principal de movimientos */
     overflow-y: auto;
 }
 
 /* Sobreescribir estilos para la sección de Movimientos en NPC para alinear botones a la derecha */
 .yokai-hunters-society.sheet.actor.npc-yokai .movements-grid-header {
     display: grid; /* Asegura que sea un grid */
-    grid-template-columns: 1fr min-content; /* Item Name | Add Button (min-content) */
+    grid-template-columns: auto min-content; /* Item Name | Add Button (min-content) */
     gap: 0; /* Eliminar el gap */
     padding: 2px 10px 2px 10px; /* top right bottom left */
     align-items: center; /* Alinear verticalmente en el centro */
@@ -1009,12 +1016,12 @@
     align-content: center;
     padding-right: 0; /* Sin padding a la derecha de este contenedor */
     margin-right: 0; /* Sin margen a la derecha de este contenedor */
-    width: 40px; /* Ajustado para que sea el mismo ancho que los botones de editar y eliminar juntos */
+    width: 48px; /* Ajustado para que sea el mismo ancho que los botones de editar y eliminar juntos */
 }
 
 .yokai-hunters-society.sheet.actor.npc-yokai .movements-item-row {
     display: grid; /* Asegura que sea un grid */
-    grid-template-columns: 1fr min-content; /* Item Name Input | Buttons (min-content) */
+    grid-template-columns: auto min-content; /* Item Name Input | Buttons (min-content) */
     gap: 0; /* Eliminar el gap */
     padding: 2px 5px 2px 5px; /* top right bottom left */
     align-items: center; /* Alinear verticalmente en el centro */
