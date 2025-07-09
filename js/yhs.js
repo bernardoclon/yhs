@@ -29,7 +29,7 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: "systems/yokai-hunters-society/templates/actor-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "actor"],
-            width: 730,
+            width: 740,
             height: 660,
             resizable: false, // Disable sheet resizing
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],

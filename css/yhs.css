@@ -222,8 +222,8 @@
 
 /* Lista de Inventario/Equipo/Movimientos */
 .yokai-hunters-society #inventory-list{
-    flex: 1 1 0%; /* Equivalent to flex: 1 */
     min-height: 529px; /* Crucial para flex items con overflow */
+    max-height: 529px; /* Crucial para flex items con overflow */
     overflow-y: auto; /* Añade barra de desplazamiento si el contenido se desborda */
     border: 1px solid #d7ccc8;
     padding-right: 2px; /* Aún más reducido */
@@ -235,8 +235,8 @@
 }
 
 .yokai-hunters-society #movimientos-list {
-    flex: 1 1 0%; /* Equivalent to flex: 1 */
     min-height: 242px; /* Crucial para flex items con overflow */
+    max-height: 242px; /* Crucial para flex items con overflow */
     overflow-y: auto; /* Añade barra de desplazamiento si el contenido se desborda */
     border: 1px solid #d7ccc8;
     padding-right: 2px; /* Aún más reducido */
