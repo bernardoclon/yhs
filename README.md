@@ -18,7 +18,4 @@ En este sistema, no eres un simple aventurero, sino un **Cazador de Yokai**, un 
 
 Prepárate para forjar tu leyenda en un Japón asediado por lo desconocido. ¿Serás un faro de esperanza o sucumbirás a la oscuridad? En **Yokai Hunters Society**, el destino está en tus manos... y en los dados.
 
-## **Sistema creado por: Punkpadour (Chema González)** 
-(https://punkpadour.itch.io/yokai-hunter)
-
 ![Whisk_wq1mjcwmmm](https://github.com/user-attachments/assets/532ff689-ffe4-4d51-91f9-9af21cf50a44)
