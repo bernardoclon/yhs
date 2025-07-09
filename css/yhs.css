@@ -221,10 +221,22 @@
 }
 
 /* Lista de Inventario/Equipo/Movimientos */
-.yokai-hunters-society #inventory-list,
+.yokai-hunters-society #inventory-list{
+    flex: 1 1 0%; /* Equivalent to flex: 1 */
+    min-height: 529px; /* Crucial para flex items con overflow */
+    overflow-y: auto; /* Añade barra de desplazamiento si el contenido se desborda */
+    border: 1px solid #d7ccc8;
+    padding-right: 2px; /* Aún más reducido */
+    padding-top: 2px; /* Aún más reducido */
+    padding-bottom: 2px; /* Aún más reducido */
+    padding-left: 2px; /* AÑADIDO: Padding izquierdo */
+    background-color: #fcfaf5;
+    border-radius: 2px; /* Aún más reducido */
+}
+
 .yokai-hunters-society #movimientos-list {
     flex: 1 1 0%; /* Equivalent to flex: 1 */
-    min-height: 528px; /* Crucial para flex items con overflow */
+    min-height: 242px; /* Crucial para flex items con overflow */
     overflow-y: auto; /* Añade barra de desplazamiento si el contenido se desborda */
     border: 1px solid #d7ccc8;
     padding-right: 2px; /* Aún más reducido */
@@ -439,6 +451,8 @@
 
 /* Para atributos del personaje (Coraje, Autocontrol, etc.) */
 .yokai-hunters-society .attributes-grid {
+    align-items: center;
+    justify-content: center;
     display: grid;
     grid-template-columns: repeat(auto-fill, 100px); /* Converted minmax(80px, 1fr) to fixed 80px for absolute */
     gap: 8px; /* Aún más reducido */

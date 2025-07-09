@@ -21,7 +21,7 @@ img.fa-spin {
   
   #pause figcaption {
     color: var(--color-text-light-0);
-    font-size: var(--font-size-46);
+    font-size: 30px;
     text-shadow: 2px 2px 2px var(--color-shadow-dark);
     font-family: var(--dnd5e-font-modesto);
     font-weight: bold;
