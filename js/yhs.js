@@ -1,10 +1,23 @@
-// Import necessary Foundry VTT classes and functions.
-// For example: import { ActorSheet, ItemSheet } from "@league-of-foundry-vtt/foundry-vtt-types/src/foundry/common/documents.mjs";
+// No se necesitan sentencias import para las clases globales de Foundry VTT.
+// Se accede a ellas directamente a través de sus espacios de nombres (ej: foundry.appv1.sheets.ActorSheet).
+
 
 /**
  * Extends the ActorSheet class from Foundry VTT to create a custom character sheet for 'hunter' actors.
  */
-class YokaiHunterSheet extends ActorSheet {
+class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta con espacio de nombres
+    constructor(...args) {
+        super(...args);
+        // Initialize attributeInputs as an instance property for this sheet.
+        // Each object stores the reference to the HTML label element, its associated input element,
+        // its current calculated limit, and its previous valid value.
+        this.attributeInputs = [
+            { attributeName: 'courage', labelElement: null, inputElement: null, currentLimit: 5, previousValue: 0 },
+            { attributeName: 'selfControl', labelElement: null, inputElement: null, currentLimit: 5, previousValue: 0 },
+            { attributeName: 'wisdom', labelElement: null, inputElement: null, currentLimit: 5, previousValue: 0 },
+            { attributeName: 'sharpness', labelElement: null, inputElement: null, currentLimit: 5, previousValue: 0 }
+        ];
+    }
 
     /**
      * Defines the HTML template and default options for this character sheet.
@@ -16,8 +29,8 @@ class YokaiHunterSheet extends ActorSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: "systems/yokai-hunters-society/templates/actor-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "actor"],
-            width: 700,
-            height: 610,
+            width: 730,
+            height: 660,
             resizable: false, // Disable sheet resizing
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
         });
@@ -81,6 +94,51 @@ class YokaiHunterSheet extends ActorSheet {
         // If the sheet is not editable, do not activate editing listeners.
         if (!this.options.editable) return;
 
+        // ***********************************************************************************
+        // INICIALIZACIÓN Y LISTENERS PARA LÍMITES DE ATRIBUTOS DINÁMICOS
+        // ***********************************************************************************
+
+        this.attributeInputs.forEach(inputObj => {
+            // Usa `html.find()` para buscar el elemento label por su data-attribute.
+            const labelElement = html.find(`.rollable-attribute[data-attribute="${inputObj.attributeName}"]`)[0];
+            
+            if (labelElement) { // Asegura que el label fue encontrado
+                inputObj.labelElement = labelElement;
+                // Encuentra el elemento input asociado, asumiendo que es el siguiente hermano.
+                const inputElement = labelElement.nextElementSibling; 
+
+                if (inputElement && inputElement.tagName === 'INPUT') { // Asegura que el siguiente hermano es un input
+                    inputObj.inputElement = inputElement;
+                    // Inicializa previousValue desde los datos del actor si están disponibles, de lo contrario 0.
+                    // Esto asegura un estado inicial correcto al abrir la hoja.
+                    inputObj.previousValue = parseInt(this.actor.system.attributes[inputObj.attributeName]?.value) || 0;
+
+                    // Adjunta el event listener directamente al elemento DOM para el evento 'input'.
+                    inputElement.oninput = this._checkAttributeLimits.bind(this);
+                } else {
+                    console.warn(`Foundry VTT: Elemento input no encontrado o no es un input para el atributo ${inputObj.attributeName}. Verifica tu actor-sheet.html.`);
+                    inputObj.inputElement = null; // Asegura que la referencia sea nula si no se encuentra
+                }
+            } else {
+                console.warn(`Foundry VTT: Elemento label para el atributo ${inputObj.attributeName} no encontrado en la hoja de personaje. Asegúrate de que el data-attribute sea correcto en actor-sheet.html.`);
+                inputObj.labelElement = null; // Asegura que la referencia sea nula si no se encuentra
+            }
+        });
+
+        // Llama a la función principal para establecer los límites iniciales y asegurar la visualización correcta.
+        // Solo llama si al menos un elemento de atributo fue encontrado para evitar errores si no hay inputs de atributos.
+        const hasAnyAttributeElements = this.attributeInputs.some(inputObj => inputObj.inputElement !== null);
+        if (hasAnyAttributeElements) {
+            this._updateAllAttributeLimits();
+        } else {
+            console.warn("Foundry VTT: No se encontraron elementos de atributo válidos para aplicar límites dinámicos. Verifica tu actor-sheet.html.");
+        }
+
+        // ***********************************************************************************
+        // FIN DE LÓGICA DE LÍMITES DE ATRIBUTOS DINÁMICOS
+        // ***********************************************************************************
+
+
         // Listener for clickable attribute labels to roll.
         html.find('.rollable-attribute').click(this._onRollAttribute.bind(this));
 
@@ -93,6 +151,7 @@ class YokaiHunterSheet extends ActorSheet {
         html.find('.item-name-clickable').click(this._onToggleItemDescription.bind(this));
 
         // Foundry's _onChangeInput method handles input changes, no custom listener needed here for submissions.
+        // We have modified _onChangeInput to defer attribute capping to our custom logic.
     }
 
     /**
@@ -103,7 +162,7 @@ class YokaiHunterSheet extends ActorSheet {
     async _onAddItem(event) {
         event.preventDefault();
         const itemData = {
-            name: game.i18n.localize("YOKAIHUNTERSSOCIETY.NewItem"), // Use localized string for "New Item"
+            name: game.i18n.localize("YOKAIHUNTERSSOCIETY.NewItem"), // Usar la función de localización de Foundry
             type: "equipment", // Ensure this matches an item type defined in template.json
             system: {
                 description: "",
@@ -126,7 +185,7 @@ class YokaiHunterSheet extends ActorSheet {
         if (item?.sheet) {
             item.sheet.render(true); // Open the item sheet for editing
         } else {
-            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ErrorOpeningSheet").replace("{item}", item?.name || 'el item'));
+            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ErrorOpeningSheet").replace("{item}", item?.name || 'el item')); // Usar la función de localización de Foundry
             console.error(`YokaiHunterSheet - _onEditItem: No item sheet found or item not found for ID: ${itemId}`);
         }
     }
@@ -143,26 +202,26 @@ class YokaiHunterSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
 
         if (!item) {
-            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemNotFound"));
+            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemNotFound")); // Usar la función de localización de Foundry
             return;
         }
 
         // Custom confirmation dialog
         new Dialog({
-            title: game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionTitle"),
-            content: `<p>${game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionMessage").replace("{item}", item.name)}</p>`,
+            title: game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionTitle"), // Usar la función de localización de Foundry
+            content: `<p>${game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionMessage").replace("{item}", item.name)}</p>`, // Usar la función de localización de Foundry
             buttons: {
                 yes: {
                     icon: '<i class="fas fa-trash"></i>',
-                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Delete"),
+                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Delete"), // Usar la función de localización de Foundry
                     callback: async () => {
                         await this.actor.deleteEmbeddedDocuments("Item", [itemId]);
-                        ui.notifications.info(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemDeleted").replace("{item}", item.name));
+                        ui.notifications.info(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemDeleted").replace("{item}", item.name)); // Usar la función de localización de Foundry
                     }
                 },
                 no: {
                     icon: '<i class="fas fa-times"></i>',
-                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Cancel")
+                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Cancel") // Usar la función de localización de Foundry
                 }
             },
             default: "no"
@@ -191,25 +250,17 @@ class YokaiHunterSheet extends ActorSheet {
      * @override
      */
     async _preUpdate(changed, options, user) {
-        // 1. Limit attributes to a maximum of 5.
-        if (changed.system?.attributes) {
-            for (const attr in changed.system.attributes) {
-                if (typeof changed.system.attributes[attr].value === 'number') {
-                    const currentAttrValue = changed.system.attributes[attr].value;
-                    if (currentAttrValue > 5) {
-                        changed.system.attributes[attr].value = 5;
-                        ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.AttributeCapWarning").replace("{attribute}", game.i18n.localize(`YOKAIHUNTERSSOCIETY.${attr.charAt(0).toUpperCase() + attr.slice(1)}`)));
-                    }
-                }
-            }
-        }
+        // REMOVED: Attribute capping logic from here.
+        // It is now handled by `_checkAttributeLimits` which modifies the DOM input value
+        // before Foundry's change detection or submission.
+        // Keeping it here would be redundant and potentially conflicting.
 
         // 2. Limit maximum health to 15.
         if (typeof changed.system?.health?.max === 'number') {
             const currentMaxHealth = changed.system.health.max;
             if (currentMaxHealth > 15) {
                 changed.system.health.max = 15;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning")); // Usar la función de localización de Foundry
             }
         }
 
@@ -221,7 +272,7 @@ class YokaiHunterSheet extends ActorSheet {
 
             if (newHealthValue > effectiveMaxHealth) {
                 changed.system.health.value = effectiveMaxHealth;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning")); // Usar la función de localización de Foundry
             }
         }
 
@@ -246,43 +297,42 @@ class YokaiHunterSheet extends ActorSheet {
             value = 0;
         }
 
-        // Apply capping logic directly and update the input value for immediate user feedback.
+        // For attribute inputs, the capping and immediate DOM update is handled by _checkAttributeLimits.
+        // Here, we just ensure the change object reflects the current DOM value.
         if (fieldName.startsWith("system.attributes.")) {
-            const attr = fieldName.split('.')[2]; // e.g., 'courage' from 'system.attributes.courage.value'
-            if (value > 5) {
-                value = 5;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.AttributeCapWarning").replace("{attribute}", game.i18n.localize(`YOKAIHUNTERSSOCIETY.${attr.charAt(0).toUpperCase() + attr.slice(1)}`)));
-            }
-            input.value = value; // Update DOM directly
-        } else if (fieldName === "system.health.max") {
+            // No direct capping here, it's handled by _checkAttributeLimits on 'input' event.
+            // Just ensure the change object reflects the current (potentially adjusted) value.
+            foundry.utils.setProperty(change, fieldName, value);
+        }
+        // Keep health/money capping logic as it's separate.
+        else if (fieldName === "system.health.max") {
             if (value > 15) {
                 value = 15;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning")); // Usar la función de localización de Foundry
             }
             // If max health changes, ensure current health doesn't exceed the new max.
             const currentHealthValue = this.actor.system.health?.value ?? 0;
             if (currentHealthValue > value) {
-                // Update the current health input field as well.
                 const currentHealthInput = this.element.find('input[name="system.health.value"]');
                 if (currentHealthInput.length) {
                     currentHealthInput.val(value);
                 }
-                // Also ensure the 'change' object reflects this.
                 foundry.utils.setProperty(change, "system.health.value", value);
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning")); // Usar la función de localización de Foundry
             }
-            input.value = value; // Update DOM directly
+            input.value = value;
+            foundry.utils.setProperty(change, fieldName, value);
         } else if (fieldName === "system.health.value") {
-            const effectiveMaxHealth = (change.system?.health?.max !== undefined) ? change.system.health.max : (this.actor.system.health?.max ?? 0);
+            const effectiveMaxHealth = (change.system?.health?.max !== undefined) ? change.system.max : (this.actor.system.health?.max ?? 0);
             if (value > effectiveMaxHealth) {
                 value = effectiveMaxHealth;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning")); // Usar la función de localización de Foundry
             }
-            input.value = value; // Update DOM directly
+            input.value = value;
+        } else {
+             // For other fields, just ensure the change object is set.
+            foundry.utils.setProperty(change, fieldName, value);
         }
-
-        // Update the 'change' object that will be passed to the parent method.
-        foundry.utils.setProperty(change, fieldName, value);
 
         // Call the parent method for Foundry to process the (now capped) changes.
         super._onChangeInput(event, change);
@@ -295,14 +345,23 @@ class YokaiHunterSheet extends ActorSheet {
      */
     async _onRollAttribute(event) {
         event.preventDefault();
+
+        // La verificación defensiva se ha simplificado ya que confiamos en que game.i18n.localize estará disponible.
+        // Si aún así falla, el problema es más fundamental en la inicialización de Foundry.
+        if (typeof game === 'undefined' || !game.i18n || typeof game.i18n.localize !== 'function') {
+            ui.notifications.error("Foundry VTT: Error crítico de localización. Asegúrate de que tu sistema/módulo esté inicializado correctamente.");
+            console.error("Foundry VTT: game.i18n.localize no está definido o no es una función. Esto indica un problema grave en la inicialización del sistema.");
+            return;
+        }
+
         const attribute = event.currentTarget.dataset.attribute;
-        const localizedAttributeName = game.i18n.localize(`YOKAIHUNTERSSOCIETY.${attribute.charAt(0).toUpperCase() + attribute.slice(1)}`);
+        const localizedAttributeName = game.i18n.localize(`YOKAIHUNTERSSOCIETY.${attribute.charAt(0).toUpperCase() + attribute.slice(1)}`); // Usar la función de localización de Foundry
 
         // Robustness checks for actor and attribute data.
         // FIX: Ensure roll proceeds even if attribute value is 0.
         // The check now explicitly looks for undefined or null, allowing 0 as a valid value.
         if (this.actor?.system?.attributes?.[attribute]?.value === undefined || this.actor?.system?.attributes?.[attribute]?.value === null) {
-            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ErrorAttributeNotFound").replace("{attribute}", localizedAttributeName));
+            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ErrorAttributeNotFound").replace("{attribute}", localizedAttributeName)); // Usar la función de localización de Foundry
             console.error(`Error: Missing actor, system, attributes, or value for attribute '${attribute}'.`);
             return;
         }
@@ -360,13 +419,13 @@ class YokaiHunterSheet extends ActorSheet {
 
         // Create the roll dialog.
         new Dialog({
-            title: `${game.i18n.localize("YOKAIHUNTERSSOCIETY.RollOf")} ${localizedAttributeName}`,
+            title: `${game.i18n.localize("YOKAIHUNTERSSOCIETY.RollOf")} ${localizedAttributeName}`, // Usar la función de localización de Foundry
             content: dialogContent,
             classes: ["yokai-hunters-society", "sheet", "actor"],
             buttons: {
                 roll: {
                     icon: '<i class="fas fa-dice-d20"></i>',
-                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Roll"),
+                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Roll"), // Usar la función de localización de Foundry
                     callback: async (html) => {
                         const rollType = html.find('[name="rollType"]:checked').val();
                         let isCurseRoll = html.find('[name="curseRoll"]').prop('checked');
@@ -429,7 +488,7 @@ class YokaiHunterSheet extends ActorSheet {
                                 allDiceResultsForTotal[0].discarded = true;
                             }
 
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseRoll")}:</div>`;
+                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseRoll")}:</div>`; // Usar la función de localización de Foundry
                             customRollDisplayHtml += `<div class="roll-components-group">`;
 
                             allDiceResultsForTotal.forEach(die => {
@@ -456,13 +515,13 @@ class YokaiHunterSheet extends ActorSheet {
 
                                 if (uncheckedOne) {
                                     await this.actor.update({ 'system.curseResistance': updatedCurseResistances });
-                                    customRollDisplayHtml += `<div class="roll-message-alert">${game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseHasFallen")}</div>`;
+                                    customRollDisplayHtml += `<div class="roll-message-alert">${game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseHasFallen")}</div>`; // Usar la función de localización de Foundry
                                 }
                             }
 
                         } else {
                             // Standard Roll Display (no curse roll).
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Roll")} ${rollType === "advantage" ? game.i18n.localize("YOKAIHUNTERSSOCIETY.WithAdvantage") : (rollType === "disadvantage" ? game.i18n.localize("YOKAIHUNTERSSOCIETY.WithDisadvantage") : game.i18n.localize("YOKAIHUNTERSSOCIETY.Normal"))}:</div>`;
+                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Roll")} ${rollType === "advantage" ? game.i18n.localize("YOKAIHUNTERSSOCIETY.WithAdvantage") : (rollType === "disadvantage" ? game.i18n.localize("YOKAIHUNTERSSOCIETY.WithDisadvantage") : game.i18n.localize("YOKAIHUNTERSSOCIETY.Normal"))}:</div>`; // Usar la función de localización de Foundry
                             customRollDisplayHtml += `<div class="roll-components-group">`;
                             baseRoll.dice.forEach(die => {
                                 die.results.forEach(result => {
@@ -475,33 +534,33 @@ class YokaiHunterSheet extends ActorSheet {
                         }
 
                         // Display base attribute value.
-                        customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Attribute")}:</div><div class="roll-components-group"><div class="roll-component-tile">${attributeBaseValue}</div></div>`;
+                        customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Attribute")}:</div><div class="roll-components-group"><div class="roll-component-tile">${attributeBaseValue}</div></div>`; // Usar la función de localización de Foundry
 
                         // Display encumbrance penalty if applicable.
                         if (encumbrancePenalty !== 0) {
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.EncumbrancePenalty")}:</div><div class="roll-components-group"><div class="roll-component-tile">${-encumbrancePenalty}</div></div>`;
+                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.EncumbrancePenalty")}:</div><div class="roll-components-group"><div class="roll-component-tile">${-encumbrancePenalty}</div></div>`; // Usar la función de localización de Foundry
                         }
 
                         // Display selected equipment bonus.
                         if (selectedEquipmentBonus !== 0) {
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Equipment")}:</div><div class="roll-components-group"><div class="roll-component-tile">${selectedEquipmentBonus >= 0 ? '+' : ''}${selectedEquipmentBonus}</div></div>`;
+                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Equipment")}:</div><div class="roll-components-group"><div class="roll-component-tile">${selectedEquipmentBonus >= 0 ? '+' : ''}${selectedEquipmentBonus}</div></div>`; // Usar la función de localización de Foundry
                         }
 
                         // Calculate and display the final total result.
                         let totalResult = finalDiceSum + attributeValueWithPenalty + selectedEquipmentBonus;
-                        customRollDisplayHtml += `<div class="roll-total-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.TotalResult")}:</div><div class="roll-components-group"><div class="roll-component-tile total-result">${totalResult}</div></div>`;
+                        customRollDisplayHtml += `<div class="roll-total-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.TotalResult")}:</div><div class="roll-components-group"><div class="roll-component-tile total-result">${totalResult}</div></div>`; // Usar la función de localización de Foundry
 
                         // Determine and display roll outcome (Success, Bad Omen, Failure).
                         let outcomeMessage = "";
                         let outcomeClass = "";
                         if (totalResult > 9) {
-                            outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.Success");
+                            outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.Success"); // Usar la función de localización de Foundry
                             outcomeClass = "roll-outcome-message--success";
                         } else if (totalResult === 9) {
-                            outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.BadOmen");
+                            outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.BadOmen"); // Usar la función de localización de Foundry
                             outcomeClass = "roll-outcome-message--warning";
                         } else { // totalResult <= 8
-                            outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.Failure");
+                            outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.Failure"); // Usar la función de localización de Foundry
                             outcomeClass = "roll-outcome-message--failure";
                         }
                         customRollDisplayHtml += `<div class="roll-outcome-message ${outcomeClass}">${outcomeMessage}</div>`;
@@ -518,7 +577,7 @@ class YokaiHunterSheet extends ActorSheet {
                 },
                 cancel: {
                     icon: '<i class="fas fa-times"></i>',
-                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Cancel")
+                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Cancel") // Usar la función de localización de Foundry
                 }
             },
             default: "roll",
@@ -547,12 +606,176 @@ class YokaiHunterSheet extends ActorSheet {
             }
         }).render(true);
     }
+
+    // ***********************************************************************************
+    // LÓGICA DE LÍMITES DINÁMICOS PARA ATRIBUTOS (MOVIDA A MÉTODOS DE CLASE)
+    // ***********************************************************************************
+
+    /**
+     * Función llamada cada vez que el valor de un input de atributo cambia.
+     * Gestiona la reversión del cambio si excede el límite y luego actualiza todos los límites.
+     * @param {Event} event - El objeto de evento del input.
+     * @private
+     */
+    _checkAttributeLimits(event) {
+        const changedInputElement = event.target; // El elemento input que el usuario está modificando
+        // Encuentra el objeto de atributo correspondiente en el array attributeInputs
+        const changedInputObj = this.attributeInputs.find(input => input.inputElement === changedInputElement);
+
+        if (!changedInputObj) {
+            console.error("Foundry VTT: Objeto de input modificado no encontrado en el array attributeInputs.");
+            return;
+        }
+
+        const newValue = parseInt(changedInputElement.value);
+        const oldValue = changedInputObj.previousValue; // El valor que tenía antes de este intento de cambio
+
+        // Establece temporalmente el valor del input modificado para el próximo cálculo de límites.
+        // Esto asegura que el cálculo considere el *nuevo valor intencionado*.
+        changedInputObj.inputElement.value = newValue;
+
+        // Primero, actualiza todos los límites internos basándose en el estado actual de los inputs.
+        // Este cálculo determinará el límite *permitido* para cada input si los cambios actuales fueran aceptados.
+        this._updateAllAttributeLimits();
+
+        // Ahora, verifica si el NUEVO valor del input que se está cambiando excede su límite *recién calculado*.
+        if (newValue > changedInputObj.currentLimit) {
+            // Si excede, revierte el valor del input a su estado válido anterior.
+            changedInputElement.value = oldValue;
+        }
+        // Asegura que el valor no sea menor que 0, según el atributo min="0"
+        if (newValue < 0) {
+            changedInputElement.value = 0;
+        }
+
+        // Después de una posible reversión, actualiza el `previousValue` del input
+        // al valor final y válido que tiene ahora.
+        changedInputObj.previousValue = parseInt(changedInputElement.value);
+
+        // Una segunda llamada a `_updateAllAttributeLimits` es crucial aquí.
+        // Si un input fue revertido, los límites para otros inputs podrían necesitar recalcularse.
+        // Por ejemplo, si un input fue revertido de 5 a 4, otro input podría ahora ser capaz de alcanzar 5.
+        this._updateAllAttributeLimits();
+    }
+
+    /**
+     * Función principal para determinar y aplicar los límites dinámicos a todos los inputs de atributos.
+     * Esta función contiene la lógica para evitar que se "roben" límites superiores.
+     * NOTA: Esta función NO MODIFICA directamente los valores de los inputs en el DOM,
+     * solo su propiedad interna `currentLimit`. La modificación del valor se maneja en `_checkAttributeLimits`.
+     * @private
+     */
+    _updateAllAttributeLimits() {
+        // Paso 1: Determinar los límites "ideales" para cada input basándose en el estado actual.
+
+        // Filtra `attributeInputs` para asegurar que solo procesamos objetos con un `inputElement` válido.
+        const validAttributeInputs = this.attributeInputs.filter(inputObj => {
+            if (!inputObj.inputElement) {
+                // Esta advertencia solo se mostrará si un elemento no se encontró,
+                // y el objeto será filtrado para evitar el error.
+                console.warn(`Foundry VTT: Input object for attribute ${inputObj.attributeName} has no inputElement reference and will be skipped in _updateAllAttributeLimits filter.`);
+            }
+            return inputObj.inputElement; // Solo mantiene si 'inputElement' no es null/undefined
+        });
+
+        // Crea una copia de los estados de los inputs, asegurando que 'inputElement' es válido.
+        const inputStates = validAttributeInputs.map(inputObj => ({
+            attributeName: inputObj.attributeName,
+            // Utilizamos el operador de encadenamiento opcional `?.` para prevenir el error
+            // si por alguna razón `inputObj.inputElement` fuera `undefined` o `null` aquí.
+            value: parseInt(inputObj.inputElement?.value) || 0,
+            previousValue: inputObj.previousValue,
+            originalInputObj: inputObj               // Referencia al objeto original en el array `attributeInputs`
+        }));
+
+        // Ordena los inputs para determinar quién "reclama" los límites más altos.
+        // La prioridad es:
+        // 1. Por valor actual (descendente): El input con el valor más alto va primero.
+        // 2. Por valor anterior (descendente): Si los valores actuales son iguales, el que ya tenía un valor más alto antes tiene prioridad.
+        // 3. Por nombre de atributo (alfabético): Para un desempate estable si todo lo demás es igual.
+        inputStates.sort((a, b) => {
+            if (a.value !== b.value) return b.value - a.value; // Prioriza el valor actual más alto
+            if (a.previousValue !== b.previousValue) return b.previousValue - a.previousValue; // Luego, el valor anterior más alto
+            return a.attributeName.localeCompare(b.attributeName); // Finalmente, por nombre de atributo para consistencia
+        });
+
+        // Variables para rastrear si los "slots" de límite (5, 4, 3) ya han sido asignados.
+        let limit5Assigned = false;
+        let limit4Assigned = false;
+        let limit3Assigned = false;
+
+        // Itera sobre los inputs ordenados para asignar límites.
+        for (const state of inputStates) {
+            const inputObj = state.originalInputObj;
+            const currentValue = state.value;
+
+            // Límite por defecto para este input en esta iteración.
+            let assignedLimit = 5;
+
+            if (!limit5Assigned) {
+                // Si el "slot" para 5 no ha sido tomado aún.
+                if (currentValue >= 5) {
+                    // Este input es el primero en alcanzar o intentar alcanzar 5, así que lo "reclama".
+                    assignedLimit = 5;
+                    limit5Assigned = true;
+                } else {
+                    // Este input aún no ha llegado a 5, pero el slot de 5 está disponible.
+                    assignedLimit = 5;
+                }
+            } else if (!limit4Assigned) {
+                // Si el slot de 5 está tomado, y el de 4 no.
+                if (currentValue >= 4) {
+                    // Este input es el primero en alcanzar o intentar alcanzar 4 (después de que el slot de 5 está tomado), lo "reclama".
+                    assignedLimit = 4;
+                    limit4Assigned = true;
+                } else {
+                    // Este input aún no ha llegado a 4, pero el slot de 4 está disponible.
+                    assignedLimit = 4;
+                }
+            } else if (!limit3Assigned) {
+                // Si los slots de 5 y 4 están tomados, y el de 3 no.
+                if (currentValue >= 3) {
+                    // Este input es el primero en alcanzar o intentar alcanzar 3 (después de los slots de 5 y 4), lo "reclama".
+                    assignedLimit = 3;
+                    limit3Assigned = true;
+                } else {
+                    // Este input aún no ha llegado a 3, pero el slot de 3 está disponible.
+                    assignedLimit = 3;
+                }
+            } else {
+                // Si todos los "slots" superiores (5, 4, 3) están tomados, este es el último input.
+                assignedLimit = 2;
+            }
+
+            // Asigna el límite calculado al objeto original del input.
+            inputObj.currentLimit = assignedLimit;
+        }
+
+        // Paso 2: Actualizar la visualización de los límites en el DOM.
+        // Como no podemos modificar el HTML para añadir spans con IDs específicos,
+        // esta parte del código se omite. Los límites se aplicarán internamente,
+        // pero no habrá una indicación visual directa en el HTML de la hoja.
+        this.attributeInputs.forEach(inputObj => {
+            if (inputObj.inputElement) {
+                // Si tuvieras un elemento para mostrar el límite, lo actualizarías aquí.
+                // Por ejemplo:
+                // const limitDisplayElement = inputObj.inputElement.parentNode.querySelector('.limit-display');
+                // if (limitDisplayElement) {
+                //     limitDisplayElement.textContent = `(Max: ${inputObj.currentLimit})`;
+                // }
+            }
+        });
+    }
+
+    // ***********************************************************************************
+    // FIN DE LÓGICA DE LÍMITES DE ATRIBUTOS DINÁMICOS
+    // ***********************************************************************************
 }
 
 /**
  * Extends the ItemSheet class from Foundry VTT to create a custom item sheet.
  */
-class YokaiHunterItemSheet extends ItemSheet {
+class YokaiHunterItemSheet extends foundry.appv1.sheets.ItemSheet { // Usar la ruta con espacio de nombres
 
     /**
      * Defines the HTML template and default options for this item sheet.
@@ -613,7 +836,7 @@ class YokaiHunterItemSheet extends ItemSheet {
 /**
  * Extends the ActorSheet class from Foundry VTT to create a custom NPC/Yokai sheet.
  */
-class YokaiNPCSheet extends ActorSheet {
+class YokaiNPCSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta con espacio de nombres
     /**
      * Defines the HTML template and default options for this NPC/Yokai sheet.
      * @override
@@ -625,7 +848,7 @@ class YokaiNPCSheet extends ActorSheet {
             template: "systems/yokai-hunters-society/templates/npc-yokai-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "actor", "npc-yokai"],
             width: 375,
-            height: 685,
+            height: 710,
             resizable: false, // Disable sheet resizing
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
         });
@@ -687,7 +910,7 @@ class YokaiNPCSheet extends ActorSheet {
     async _onAddMovimiento(event) {
         event.preventDefault();
         const itemData = {
-            name: game.i18n.localize("YOKAIHUNTERSSOCIETY.NewItem"),
+            name: game.i18n.localize("YOKAIHUNTERSSOCIETY.NewItem"), // Usar la función de localización de Foundry
             type: "movimiento"
         };
         await Item.create(itemData, { parent: this.actor });
@@ -706,7 +929,7 @@ class YokaiNPCSheet extends ActorSheet {
         if (item?.sheet) {
             item.sheet.render(true); // Open the item sheet for editing.
         } else {
-            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ErrorOpeningSheet").replace("{item}", item?.name || 'el item'));
+            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ErrorOpeningSheet").replace("{item}", item?.name || 'el item')); // Usar la función de localización de Foundry
             console.error(`_onEditItem (NPC): No item sheet found or item not found for ID: ${itemId}`);
         }
     }
@@ -722,26 +945,26 @@ class YokaiNPCSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
 
         if (!item) {
-            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemNotFound"));
+            ui.notifications.error(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemNotFound")); // Usar la función de localización de Foundry
             return;
         }
 
         // Custom confirmation dialog
         new Dialog({
-            title: game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionTitle"),
-            content: `<p>${game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionMessage").replace("{item}", item.name)}</p>`,
+            title: game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionTitle"), // Usar la función de localización de Foundry
+            content: `<p>${game.i18n.localize("YOKAIHUNTERSSOCIETY.ConfirmDeletionMessage").replace("{item}", item.name)}</p>`, // Usar la función de localización de Foundry
             buttons: {
                 yes: {
                     icon: '<i class="fas fa-trash"></i>',
-                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Delete"),
+                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Delete"), // Usar la función de localización de Foundry
                     callback: async () => {
                         await this.actor.deleteEmbeddedDocuments("Item", [itemId]);
-                        ui.notifications.info(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemDeleted").replace("{item}", item.name));
+                        ui.notifications.info(game.i18n.localize("YOKAIHUNTERSSOCIETY.ItemDeleted").replace("{item}", item.name)); // Usar la función de localización de Foundry
                     }
                 },
                 no: {
                     icon: '<i class="fas fa-times"></i>',
-                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Cancel")
+                    label: game.i18n.localize("YOKAIHUNTERSSOCIETY.Cancel") // Usar la función de localización de Foundry
                 }
             },
             default: "no"
@@ -775,7 +998,7 @@ class YokaiNPCSheet extends ActorSheet {
             const currentMaxHealth = changed.system.health.max;
             if (currentMaxHealth > 15) {
                 changed.system.health.max = 15;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning")); // Usar la función de localización de Foundry
             }
         }
 
@@ -787,7 +1010,7 @@ class YokaiNPCSheet extends ActorSheet {
 
             if (newHealthValue > effectiveMaxHealth) {
                 changed.system.health.value = effectiveMaxHealth;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning")); // Usar la función de localización de Foundry
             }
         }
 
@@ -815,7 +1038,7 @@ class YokaiNPCSheet extends ActorSheet {
         if (fieldName === "system.health.max") {
             if (value > 15) {
                 value = 15;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.MaxHealthCapWarning")); // Usar la función de localización de Foundry
             }
             // If max health changes, ensure current health doesn't exceed the new max.
             const currentHealthValue = this.actor.system.health?.value ?? 0;
@@ -825,14 +1048,14 @@ class YokaiNPCSheet extends ActorSheet {
                     currentHealthInput.val(value);
                 }
                 foundry.utils.setProperty(change, "system.health.value", value);
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning")); // Usar la función de localización de Foundry
             }
             input.value = value;
         } else if (fieldName === "system.health.value") {
-            const effectiveMaxHealth = (change.system?.health?.max !== undefined) ? change.system.health.max : (this.actor.system.health?.max ?? 0);
+            const effectiveMaxHealth = (change.system?.health?.max !== undefined) ? change.system.max : (this.actor.system.health?.max ?? 0);
             if (value > effectiveMaxHealth) {
                 value = effectiveMaxHealth;
-                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning"));
+                ui.notifications.warn(game.i18n.localize("YOKAIHUNTERSSOCIETY.HealthCapWarning")); // Usar la función de localización de Foundry
             }
             input.value = value;
         }
@@ -849,45 +1072,44 @@ class YokaiNPCSheet extends ActorSheet {
 // Registers custom sheets with Foundry VTT when the 'init' hook fires.
 Hooks.on("init", function() {
     // Unregister default sheets to prevent conflicts with custom ones.
-    Actors.unregisterSheet("core", ActorSheet);
-    Items.unregisterSheet("core", ItemSheet);
+    // Usar las referencias con espacio de nombres
+    foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
+    foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
 
     // Register the custom character sheet for 'hunter' actors.
-    Actors.registerSheet("yokai-hunters-society", YokaiHunterSheet, {
+    foundry.documents.collections.Actors.registerSheet("yokai-hunters-society", YokaiHunterSheet, {
         types: ["hunter"],
         makeDefault: true,
         label: "Yokai Hunters Society Sheet"
     });
 
     // Register the custom NPC/Yokai sheet for 'npcYokai' actors.
-    Actors.registerSheet("yokai-hunters-society", YokaiNPCSheet, {
+    foundry.documents.collections.Actors.registerSheet("yokai-hunters-society", YokaiNPCSheet, {
         types: ["npcYokai"],
         makeDefault: false,
         label: "NPC/Yokai Sheet"
     });
 
     // Register the custom item sheet for 'equipment' and 'gear' types.
-    Items.registerSheet("yokai-hunters-society", YokaiHunterItemSheet, {
+    foundry.documents.collections.Items.registerSheet("yokai-hunters-society", YokaiHunterItemSheet, {
         types: ["equipment", "gear"],
         makeDefault: true,
         label: "Yokai Hunters Society Item Sheet"
     });
 
     // Register the custom item sheet for the 'movimiento' type, reusing the same sheet class.
-    Items.registerSheet("yokai-hunters-society", YokaiHunterItemSheet, {
+    foundry.documents.collections.Items.registerSheet("yokai-hunters-society", YokaiHunterItemSheet, {
         types: ["movimiento"],
         makeDefault: false,
         label: "Movimiento Sheet"
     });
 
     // Define global configuration for localization.
-    CONFIG.YOKAIHUNTERSSOCIETY = {
-        // Add any global configurations needed here.
-        // For example, if you had specific item types or attributes that needed to be referenced globally.
-    };
+    // CONFIG.YOKAIHUNTERSSOCIETY se inicializa aquí. game.i18n.localize se usará directamente.
+    CONFIG.YOKAIHUNTERSSOCIETY = {};
 });
 
-// Hook to set default curse resistance for new "hunter" actors before creation.
+// Hook para establecer la resistencia a la maldición por defecto para los nuevos actores "hunter" antes de la creación.
 Hooks.on("preCreateActor", (actorDocument, data, options, userId) => {
     // Check if the actor being created is of type "hunter".
     if (data.type === "hunter") {

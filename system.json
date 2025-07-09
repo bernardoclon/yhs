@@ -23,7 +23,7 @@
     }
   ],
   "url": "https://github.com/your-repo/yokai-hunters-societ",
-  "manifest": "https://raw.githubusercontent.com/bernardoclon/yhs/refs/tags/V1/system.json",
+  "manifest": "https://raw.githubusercontent.com/bernardoclon/yhs/refs/heads/main/system.json",
   "download": "https://github.com/bernardoclon/yhs/archive/refs/tags/V1.zip",
   "background": "systems/yokai-hunters-society/art/banner.jpg"
 }
