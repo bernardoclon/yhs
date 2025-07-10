@@ -70,6 +70,7 @@
 .yokai-hunters-society .section-equipment {
     flex-direction: column;
     min-width: 318px; /* Aún más reducido */
+    max-width: 318px; /* Aún más reducido */
     min-height: 600px; /* Crucial para flex items con overflow */
     max-height: 600px;/* No se necesita flex: 1 aquí, ya se estira por align-items: stretch del padre */
     overflow-y: auto; /* Añade barra de desplazamiento si el contenido es muy largo */
