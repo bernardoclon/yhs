@@ -11,12 +11,12 @@
                             <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="Imagen del personaje"/>
                         </div>
                         <div class="section-panel-default character-name-panel">
-                            <label for="characterName" class="label-text">Nombre</label>
-                            <input type="text" name="name" value="{{actor.name}}" placeholder="Nombre del Personaje"
+                            <label for="characterName" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.CharacterName"}}</label>
+                            <input type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.CharacterName'}}"
                                    class="input-field" data-field="name">
                         </div>
                         <div class="section-panel-default character-age-panel">
-                            <label for="age" class="label-text">Edad</label>
+                            <label for="age" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Age"}}</label>
                             <input type="number" name="system.age" value="{{system.age}}" min="0"
                                    class="input-field" data-field="system.age">
                         </div>
@@ -24,23 +24,23 @@
 
                     <!-- Look Section -->
                     <div class="section-panel-default section-spacing">
-                        <label for="look" class="label-text">Apariencia</label>
+                        <label for="look" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Look"}}</label>
                         <textarea name="system.look" rows="3"
                                   class="input-field textarea-field"
-                                  placeholder="Describe la apariencia de tu personaje..." data-field="system.look">{{system.look}}</textarea>
+                                  placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Look'}}" data-field="system.look">{{system.look}}</textarea>
                     </div>
 
                     <!-- Background Section -->
                     <div class="section-panel-default section-spacing">
-                        <label for="background" class="label-text">Trasfondo</label>
+                        <label for="background" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Background"}}</label>
                         <textarea name="system.background" rows="3"
                                   class="input-field textarea-field"
-                                  placeholder="Describe el trasfondo de tu personaje..." data-field="system.background">{{system.background}}</textarea>
+                                  placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Background'}}" data-field="system.background">{{system.background}}</textarea>
                     </div>
 
                     <!-- Curse Resistance Section -->
                     <div class="section-curse-resistance section-spacing">
-                        <h2 class="section-title text-primary">Resistencia a la Maldición</h2>
+                        <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.CurseResistance"}}</h2>
                         <div class="curse-resistance-checkboxes">
                             <div class="checkbox-wrapper">
                                 <input type="checkbox" id="curseResistance1-{{actor._id}}" name="system.curseResistance.1" {{checked system.curseResistance.[1]}} class="curse-checkbox-hidden" data-field="system.curseResistance.1">
@@ -73,22 +73,22 @@
                     <div class="main-stats-container">
                         <!-- Attributes Section -->
                         <div class="section-attributes main-stats-item">
-                            <h2 class="section-title text-on-dark">Atributos</h2>
+                            <h2 class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Attributes"}}</h2>
                             <div class="attributes-grid">
                                 <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="courage">Coraje</label>
+                                    <label class="label-text rollable-attribute" data-attribute="courage">{{localize "YOKAIHUNTERSSOCIETY.Courage"}}</label>
                                     <input type="number" name="system.attributes.courage.value" value="{{system.attributes.courage.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.courage.value">
                                 </div>
                                 <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="selfControl">Autocontrol</label>
+                                    <label class="label-text rollable-attribute" data-attribute="selfControl">{{localize "YOKAIHUNTERSSOCIETY.SelfControl"}}</label>
                                     <input type="number" name="system.attributes.selfControl.value" value="{{system.attributes.selfControl.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.selfControl.value">
                                 </div>
                                 <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="wisdom">Sabiduría</label>
+                                    <label class="label-text rollable-attribute" data-attribute="wisdom">{{localize "YOKAIHUNTERSSOCIETY.Wisdom"}}</label>
                                     <input type="number" name="system.attributes.wisdom.value" value="{{system.attributes.wisdom.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.wisdom.value">
                                 </div>
                                 <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="sharpness">Agudeza</label>
+                                    <label class="label-text rollable-attribute" data-attribute="sharpness">{{localize "YOKAIHUNTERSSOCIETY.Sharpness"}}</label>
                                     <input type="number" name="system.attributes.sharpness.value" value="{{system.attributes.sharpness.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.sharpness.value">
                                 </div>
                             </div>
@@ -98,15 +98,15 @@
                         <div class="hp-money-wrapper main-stats-item">
                             <!-- Health Section -->
                             <div class="section-hp">
-                                <h2 class="section-title text-primary">Salud</h2>
+                                <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Health"}}</h2>
                                 <div class="hp-money-content">
                                     <div class="hp-input-group">
-                                        <label for="healthValue" class="label-text">Actual</label>
+                                        <label for="healthValue" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Current"}}</label>
                                         <input type="number" name="system.health.value" value="{{system.health.value}}" class="hp-money-input" data-dtype="Number" data-field="system.health.value">
                                     </div>
                                     <span class="hp-separator text-primary">/</span>
                                     <div class="hp-input-group">
-                                        <label for="healthMax" class="label-text">Máx</label>
+                                        <label for="healthMax" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Max"}}</label>
                                         <input type="number" name="system.health.max" value="{{system.health.max}}" class="hp-money-input" data-dtype="Number" data-field="system.health.max">
                                     </div>
                                 </div>
@@ -114,10 +114,10 @@
 
                             <!-- Money Section -->
                             <div class="section-money">
-                                <h2 class="section-title text-primary">Dinero</h2>
+                                <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Money"}}</h2>
                                 <div class="hp-money-content">
                                     <div class="hp-input-group">
-                                        <label for="money" class="label-text">Cantidad</label>
+                                        <label for="money" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Money"}}</label>
                                         <input type="number" name="system.money" value="{{system.money}}" class="hp-money-input" data-dtype="Number" data-field="system.money">
                                     </div>
                                 </div>
@@ -128,11 +128,11 @@
 
                 <!-- Equipment Section -->
                 <div class="section-equipment main-content-flex-item">
-                    <h2 class="section-title text-on-dark">Equipo</h2>
+                    <h2 class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Equipment"}}</h2>
                     <!-- Header for Inventory Columns -->
                     <div class="equipment-grid-header">
-                        <span>Nombre</span>
-                        <span>Bonus</span>
+                        <span>{{localize "YOKAIHUNTERSSOCIETY.ItemName"}}</span>
+                        <span>{{localize "YOKAIHUNTERSSOCIETY.ItemBonus"}}</span>
                         <div class="flex justify-end">
                             <button type="button" id="add-item" class="add-item-btn">
                                 +
@@ -142,8 +142,8 @@
                     <div id="inventory-list" class="space-y-3">
                         {{#each actor.items as |item id|}}
                         <div class="equipment-item-row" data-item-id="{{item._id}}">
-                            <input type="text" name="item.{{item._id}}.name" value="{{item.name}}" class="item-input item-name-clickable" placeholder="Objeto" readonly>
-                            <input type="number" name="item.{{item._id}}.system.bonus" value="{{item.system.bonus}}" min="-10" max="10" class="item-input" placeholder="Bonus" readonly>
+                            <input type="text" name="item.{{item._id}}.name" value="{{item.name}}" class="item-input item-name-clickable" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.ItemName'}}" readonly>
+                            <input type="number" name="item.{{item._id}}.system.bonus" value="{{item.system.bonus}}" min="-10" max="10" class="item-input" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.ItemBonus'}}" readonly>
                             <div class="item-buttons">
                                 <button type="button" class="edit-item-btn" data-item-id="{{item._id}}">
                                     <i class="fas fa-pencil-alt"></i>

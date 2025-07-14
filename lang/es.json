@@ -53,6 +53,7 @@
     "CurseHasFallen": "¡Una Maldición ha caído sobre ti!",
     "WithAdvantage": "con Ventaja",
     "WithDisadvantage": "con Desventaja",
-    "ErrorAttributeNotFound": "Error: Atributo '{attribute}' no encontrado o valor inválido."
+    "ErrorAttributeNotFound": "Error: Atributo '{attribute}' no encontrado o valor inválido.",
+    "GamePaused": "Juego en Pausa"
   }
 }

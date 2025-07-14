@@ -8,9 +8,9 @@ Hooks.on("ready", () => {
                 img.src = "systems/yokai-hunters-society/art/logo.png";
                 img.classList.add('customized'); // Marcar como modificado
                 
-                // Opcional: Cambiar el texto
+                // Opcional: Cambiar el texto a un texto localizado
                 const caption = pauseScreen.querySelector("figcaption");
-                if (caption) caption.textContent = "Juego en Pausa";
+                if (caption) caption.textContent = game.i18n.localize("YOKAIHUNTERSSOCIETY.GamePaused");
             }
         }
     });

@@ -23,10 +23,15 @@
       "lang": "es",
       "name": "Español",
       "path": "lang/es.json"
+    },
+    {
+      "lang": "en",
+      "name": "Inglés",
+      "path": "lang/en.json"
     }
   ],
   "url": "https://github.com/your-repo/yokai-hunters-societ",
   "manifest": "https://raw.githubusercontent.com/bernardoclon/yhs/refs/heads/main/system.json",
-  "download": "https://github.com/bernardoclon/yhs/archive/refs/tags/V1.zip",
+  "download": "https://github.com/bernardoclon/yhs/archive/refs/tags/V1-1.zip",
   "background": "systems/yokai-hunters-society/art/banner.jpg"
 }
