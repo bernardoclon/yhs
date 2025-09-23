@@ -1,12 +1,7 @@
 <form class="sheet-form" autocomplete="off">
-    <section class="sheet-content-area">
-        <div class="main-container">
-            <!-- New flex container for main content -->
-            <div class="main-content-flex-container section-spacing">
-                <!-- Left Column Content -->
-                <div class="left-column-content main-content-flex-item">
-                    <!-- Character Header Section with Image -->
-                    <div class="header-grid-with-image">
+    <div class="main-content">
+        <div class="panel-left">
+            <div class="header-grid-with-image">
                         <div class="character-image-container">
                             <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="Imagen del personaje"/>
                         </div>
@@ -21,24 +16,18 @@
                                    class="input-field" data-field="system.age">
                         </div>
                     </div>
-
-                    <!-- Look Section -->
                     <div class="section-panel-default section-spacing">
                         <label for="look" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Look"}}</label>
                         <textarea name="system.look" rows="3"
                                   class="input-field textarea-field"
                                   placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Look'}}" data-field="system.look">{{system.look}}</textarea>
                     </div>
-
-                    <!-- Background Section -->
                     <div class="section-panel-default section-spacing">
                         <label for="background" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Background"}}</label>
                         <textarea name="system.background" rows="3"
                                   class="input-field textarea-field"
                                   placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Background'}}" data-field="system.background">{{system.background}}</textarea>
                     </div>
-
-                    <!-- Curse Resistance Section -->
                     <div class="section-curse-resistance section-spacing">
                         <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.CurseResistance"}}</h2>
                         <div class="curse-resistance-checkboxes">
@@ -68,10 +57,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Attributes, Health, and Money Section -->
                     <div class="main-stats-container">
-                        <!-- Attributes Section -->
                         <div class="section-attributes main-stats-item">
                             <h2 class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Attributes"}}</h2>
                             <div class="attributes-grid">
@@ -93,10 +79,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- HP and Money Wrapper -->
                         <div class="hp-money-wrapper main-stats-item">
-                            <!-- Health Section -->
                             <div class="section-hp">
                                 <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Health"}}</h2>
                                 <div class="hp-money-content">
@@ -111,8 +94,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Money Section -->
                             <div class="section-money">
                                 <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Money"}}</h2>
                                 <div class="hp-money-content">
@@ -124,12 +105,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Equipment Section -->
-                <div class="section-equipment main-content-flex-item">
+        </div>
+        <div class="panel-right">
+            <div class="section-equipment main-content-flex-item">
                     <h2 class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Equipment"}}</h2>
-                    <!-- Header for Inventory Columns -->
                     <div class="equipment-grid-header">
                         <span>{{localize "YOKAIHUNTERSSOCIETY.ItemName"}}</span>
                         <span>{{localize "YOKAIHUNTERSSOCIETY.ItemBonus"}}</span>
@@ -157,7 +136,6 @@
                         {{/each}}
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+        </div>    
+    </div>
 </form>

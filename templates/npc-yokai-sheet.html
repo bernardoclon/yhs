@@ -1,74 +1,66 @@
 <form class="sheet-form" autocomplete="off">
-    <section class="sheet-content-area">
-        <div class="main-container">
-            <!-- Character Header Section with Image -->
-            <div class="header-grid-with-image">
-                <div class="character-image-container">
-                    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="Imagen del personaje"/>
-                </div>
-                <div class="section-panel-default character-name-panel">
-                    <label for="characterName" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.CharacterName"}}</label>
-                    <input type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.CharacterName'}}"
-                           class="input-field">
-                </div>
-                <div class="section-panel-default character-age-panel">
-                    <label for="level" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Level"}}</label>
-                    <input type="number" name="system.level" value="{{system.level}}" min="0"
-                           class="input-field">
-                </div>
-            </div>
-
-            <!-- Health Section - ADDED/MOVED THIS SECTION HERE -->
-            <div class="section-panel-default section-spacing">
-                <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Health"}}</h2>
-                <div class="hp-money-content">
-                    <div class="hp-input-group">
-                        <label for="healthValue" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Current"}}</label>
-                        <input type="number" name="system.health.value" value="{{system.health.value}}"
-                               class="hp-money-input" data-dtype="Number">
+        <div class="main-contenty">
+            <div class="panel-yokai">
+                <div class="header-grid-with-image">
+                    <div class="character-image-container">
+                        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="Imagen del personaje"/>
                     </div>
-                    <span class="hp-separator">/</span>
-                    <div class="hp-input-group">
-                        <label for="healthMax" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Max"}}</label>
-                        <input type="number" name="system.health.max" value="{{system.health.max}}"
-                               class="hp-money-input" data-dtype="Number">
+                    <div class="section-panel-default character-name-panel">
+                        <label for="characterName" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.CharacterName"}}</label>
+                        <input type="text" name="name" value="{{actor.name}}" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.CharacterName'}}"
+                            class="input-field">
+                    </div>
+                    <div class="section-panel-default character-age-panel">
+                        <label for="level" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Level"}}</label>
+                        <input type="number" name="system.level" value="{{system.level}}" min="0"
+                            class="input-field">
                     </div>
                 </div>
-            </div>
-
-            <!-- Description Section -->
-            <div class="section-panel-default section-spacing">
-                <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Description"}}</h2>
-                <textarea name="system.description" class="textarea-field" rows="5">{{system.description}}</textarea>
-            </div>
-
-            <!-- Movements Section -->
-            <div class="section-movimientos section-spacing">
-                <div class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Movements"}}</div>
-                <div class="movements-grid-header equipment-grid-header"> <!-- Added equipment-grid-header class for shared styles -->
-                    <span>{{localize "YOKAIHUNTERSSOCIETY.ItemName"}}</span>
-                    <!-- ELIMINADO: El div "flex justify-end" que envolvía el botón. Ahora el botón es un hijo directo de la cuadrícula. -->
-                    <button type="button" id="add-movimiento" class="add-item-btn">
-                        +
-                    </button>
-                </div>
-                <div id="movimientos-list" class="space-y-3">
-                    {{#each movimientos as |item id|}}
-                    <div class="equipment-item-row movements-item-row" data-item-id="{{item._id}}"> <!-- Added movements-item-row class -->
-                        <input type="text" name="item.{{item._id}}.name" value="{{item.name}}" class="item-input item-name-clickable" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.ItemName'}}" readonly>
-                        <div class="item-buttons">
-                            <button type="button" class="edit-item-btn" data-item-id="{{item._id}}">
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            <button type="button" class="remove-item-btn" data-item-id="{{item._id}}">X</button>
+                <div class="section-panel-default section-spacing">
+                    <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Health"}}</h2>
+                    <div class="hp-money-content">
+                        <div class="hp-input-group">
+                            <label for="healthValue" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Current"}}</label>
+                            <input type="number" name="system.health.value" value="{{system.health.value}}"
+                                class="hp-money-input" data-dtype="Number">
                         </div>
-                        <div class="item-description-toggle hidden">
-                            <p>{{item.system.description}}</p>
+                        <span class="hp-separator">/</span>
+                        <div class="hp-input-group">
+                            <label for="healthMax" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Max"}}</label>
+                            <input type="number" name="system.health.max" value="{{system.health.max}}"
+                                class="hp-money-input" data-dtype="Number">
                         </div>
                     </div>
-                    {{/each}}
                 </div>
-            </div>
+                <div class="section-panel-default section-spacing">
+                    <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Description"}}</h2>
+                    <textarea name="system.description" class="textarea-field" rows="5">{{system.description}}</textarea>
+                </div>
+                <div class="section-movimientos section-spacing">
+                    <div class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Movements"}}</div>
+                    <div class="movements-grid-header equipment-grid-header">
+                        <span>{{localize "YOKAIHUNTERSSOCIETY.ItemName"}}</span>
+                        <button type="button" id="add-movimiento" class="add-item-btn">
+                            +
+                        </button>
+                    </div>
+                    <div id="movimientos-list" class="space-y-3">
+                        {{#each movimientos as |item id|}}
+                        <div class="equipment-item-row movements-item-row" data-item-id="{{item._id}}">
+                            <input type="text" name="item.{{item._id}}.name" value="{{item.name}}" class="item-input item-name-clickable" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.ItemName'}}" readonly>
+                            <div class="item-buttons">
+                                <button type="button" class="edit-item-btn" data-item-id="{{item._id}}">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                                <button type="button" class="remove-item-btn" data-item-id="{{item._id}}">X</button>
+                            </div>
+                            <div class="item-description-toggle hidden">
+                                <p>{{item.system.description}}</p>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>    
         </div>
-    </section>
 </form>

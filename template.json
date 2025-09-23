@@ -27,16 +27,16 @@
         "equipment": []
       },
       "hunter": {
-        "img": "icons/svg/mystery-man.svg",
+        "img": "systems/yokai-hunters-society/art/doll.png",
         "token": {
-          "img": "icons/svg/mystery-man.svg"
+          "img": "systems/yokai-hunters-society/art/doll.png"
         },
         "inheritedTemplates": ["base"]
       },
       "npcYokai": {
-        "img": "icons/svg/mystery-man.svg",
+        "img": "systems/yokai-hunters-society/art/doll.png",
         "token": {
-          "img": "icons/svg/mystery-man.svg"
+          "img": "systems/yokai-hunters-society/art/doll.png"
         },
         "inheritedTemplates": ["base"],
         "system": {

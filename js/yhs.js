@@ -29,9 +29,8 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: "systems/yokai-hunters-society/templates/actor-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "actor"],
-            width: 740,
-            height: 660,
-            resizable: false, // Disable sheet resizing
+            width: 795,
+            height: 715,
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
         });
     }
@@ -788,8 +787,7 @@ class YokaiHunterItemSheet extends foundry.appv1.sheets.ItemSheet { // Usar la r
             template: "systems/yokai-hunters-society/templates/item-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "item"],
             width: 500,
-            height: 430,
-            resizable: false, // Disable sheet resizing
+            height: 370,
         });
     }
 
@@ -848,8 +846,7 @@ class YokaiNPCSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta co
             template: "systems/yokai-hunters-society/templates/npc-yokai-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "actor", "npc-yokai"],
             width: 375,
-            height: 710,
-            resizable: false, // Disable sheet resizing
+            height: 740,
             tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
         });
     }

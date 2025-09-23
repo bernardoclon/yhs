@@ -1,8 +1,7 @@
 <form class="yokai-hunters-society sheet item sheet-form" autocomplete="off">
-    <section class="sheet-body">
+    <div class="main-contento">
         <div class="flex flex-col p-6 space-y-6">
-            <!-- Sección de Encabezado del Objeto con Imagen -->
-            <div class="item-header-grid-with-image">
+           <div class="item-header-grid-with-image">
                 <div class="item-image-container">
                     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" alt="Imagen del objeto"/>
                 </div>
@@ -11,14 +10,10 @@
                     <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.ItemName'}}" class="input-field">
                 </div>
             </div>
-
-            <!-- Descripción del Objeto -->
             <div class="section-panel-default">
                 <label for="itemDescription" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Description"}}</label>
                 <textarea name="system.description" rows="5" class="input-field textarea-field" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Description'}}">{{system.description}}</textarea>
             </div>
-
-            <!-- Bonus del Objeto (visible solo si showBonusField es true) -->
             {{#if showBonusField}}
             <div class="section-panel-default">
                 <label for="itemBonus" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.ItemBonus"}}</label>
@@ -26,5 +21,5 @@
             </div>
             {{/if}}
         </div>
-    </section>
+    </div>    
 </form>
