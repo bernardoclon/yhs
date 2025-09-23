@@ -10,10 +10,9 @@
                     <input type="text" name="name" value="{{item.name}}" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.ItemName'}}" class="input-field">
                 </div>
             </div>
-            <div class="section-panel-default">
+            <div class="section-panel-default text-area-div">
                 <label for="itemDescription" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Description"}}</label>
-                <textarea name="system.description" rows="5" class="input-field textarea-field" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Description'}}">{{system.description}}</textarea>
-            </div>
+                <textarea name="system.description" rows="5" class="input-field textarea-field text-area" placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Description'}}">{{system.description}}</textarea>            </div>
             {{#if showBonusField}}
             <div class="section-panel-default">
                 <label for="itemBonus" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.ItemBonus"}}</label>
