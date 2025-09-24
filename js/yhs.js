@@ -386,12 +386,13 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
         const dialogContent = `
             <div class="yokai-hunters-society sheet actor dialog-roll-container">
                 <form>
+                    <div class="main-contentd">
                     <div class="form-group">
                         <label>${game.i18n.localize("YOKAIHUNTERSSOCIETY.RollType")}:</label>
                         <div class="form-fields">
-                            <label><input type="radio" name="rollType" value="normal" checked ${noCurseResistanceLeft ? 'disabled' : ''}> ${game.i18n.localize("YOKAIHUNTERSSOCIETY.Normal")}</label>
-                            <label><input type="radio" name="rollType" value="advantage" ${noCurseResistanceLeft ? 'disabled' : ''}> ${game.i18n.localize("YOKAIHUNTERSSOCIETY.Advantage")}</label>
-                            <label><input type="radio" name="rollType" value="disadvantage"> ${game.i18n.localize("YOKAIHUNTERSSOCIETY.Disadvantage")}</label>
+                            <div><label><input type="radio" name="rollType" value="normal" checked ${noCurseResistanceLeft ? 'disabled' : ''}> ${game.i18n.localize("YOKAIHUNTERSSOCIETY.Normal")}</label></div>
+                            <div><label><input type="radio" name="rollType" value="advantage" ${noCurseResistanceLeft ? 'disabled' : ''}> ${game.i18n.localize("YOKAIHUNTERSSOCIETY.Advantage")}</label></div>
+                            <div><label><input type="radio" name="rollType" value="disadvantage"> ${game.i18n.localize("YOKAIHUNTERSSOCIETY.Disadvantage")}</label></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -412,6 +413,7 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
                     </div>
                     <div class="form-group"></div>
                     <div class="form-group"></div>
+                    </div>
                 </form>
             </div>
         `;
