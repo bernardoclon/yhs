@@ -2,7 +2,7 @@
   "id": "yokai-hunters-society",
   "title": "Yokai Hunters Society",
   "description": "Un Sistema básico para Yokai Hunters Society en Foundry VTT.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "authors": [
     {
       "name": "Don Goblin"
@@ -35,4 +35,5 @@
   "download": "https://github.com/bernardoclon/yhs/archive/refs/tags/V1-2.zip",
   "background": "systems/yokai-hunters-society/art/banner.jpg"
 }
+
 
