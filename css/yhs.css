@@ -2,7 +2,7 @@
 
 .app.window-app.yokai-hunters-society.sheet.actor {
     min-width: 655px;
-    min-height: 675px;
+    min-height: 690px;
 }
 
 .app.window-app.yokai-hunters-society.sheet.actor.npc-yokai {
@@ -1215,4 +1215,5 @@
         width: 35px;
         height: 35px;
     }
+
 }
