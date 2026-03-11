@@ -2,7 +2,7 @@
 
 .app.window-app.yokai-hunters-society.sheet.actor {
     min-width: 655px;
-    min-height: 690px;
+    min-height: 705px;
 }
 
 .app.window-app.yokai-hunters-society.sheet.actor.npc-yokai {
@@ -64,9 +64,9 @@
 }
 
 .panel-yokai{
-    padding: 1.5%;
-    width: 100%; /* Let margin define the width */
-    margin: 2%; /* Add margin to reveal the background */
+    padding: 1.5 rem;
+    width: 100%;
+    margin: 2%;
     background-color: #f5f0e1;
     border: 3px solid black;
     border-radius: 2%;
@@ -78,27 +78,54 @@
 
 
 .panel-left{
-    padding: 1.5%;
+    padding: 10px;
     flex: 6 1 350px;
-    margin: 1%;
+    margin: 10px;
     background-color: #f5f0e1;
     border: 3px solid #6d4c41;
-    border-radius: 2%;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+        "header header"
+        "look look"
+        "background background"
+        "curse curse"
+        "attributes hp-money";
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.main-contenty .panel-left {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 0.5rem;
+    grid-template-areas:
+        "header"
+        "health"
+        "description";
+}
+
+.main-contenty .npc-description {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+}
+.main-contenty .npc-description .textarea-field {
+    flex-grow: 1;
 }
 
 .panel-right{
-    padding: 1.5%;
+    padding: 10px;
     flex: 4 1 250px;
-    margin: 1%;
+    margin: 10px;
     background-color: #f5f0e1;
     border: 3px solid #6d4c41;
-    border-radius: 2%;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .yokai-hunters-society .main-container,
@@ -154,6 +181,18 @@
     margin-bottom: 1%;
 }
 
+.character-header { grid-area: header; }
+.character-look { grid-area: look; }
+.character-background { grid-area: background; }
+.character-curse-resistance { grid-area: curse; }
+.character-attributes { grid-area: attributes; }
+.character-hp-money { grid-area: hp-money; }
+
+.npc-header { grid-area: header; }
+.npc-health { grid-area: health; }
+.npc-description { grid-area: description; }
+
+
 .yokai-hunters-society .section-panel-default.character-look-panel,
 .yokai-hunters-society .section-panel-default.character-background-panel {
     display: flex;
@@ -181,7 +220,7 @@
 }
 
 .yokai-hunters-society.sheet.actor.npc-yokai .header-grid-with-image {
-    grid-template-columns: 70px 1fr 65px; /* Give more space to the name on the narrow NPC sheet */
+    grid-template-columns: 70px 1fr 65px;
     gap: 0.5rem;
 }
 
@@ -257,6 +296,7 @@
 .yokai-hunters-society .textarea-field {
     resize: vertical;
     min-height: 40px;
+    height: 100%;
 }
 
 .yokai-hunters-society .section-title {
@@ -374,7 +414,7 @@
 
 .yokai-hunters-society .item-buttons {
     display: flex;
-    gap: 0.1rem;
+    gap: 0.2rem;
     justify-content: flex-end;
 }
 
@@ -383,16 +423,25 @@
     background-color: #b71c1c;
     color: white;
     border: none;
-    border-radius: 0.1rem;
-    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem;
+    padding: 0.2rem 0.4rem;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    line-height: 1;
     transition: background-color 0.2s ease, transform 0.1s ease;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
 }
 
-.yokai-hunters-society .add-item-btn {
-    width: 50px;
+.yokai-hunters-society .section-attributes {
+   margin: 10px;
+   box-sizing: border-box;
+}
+
+.yokai-hunters-society .hp-money-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-sizing: border-box;
 }
 
 .yokai-hunters-society .item-buttons button:hover,
@@ -523,34 +572,6 @@
     font-size: 0.85rem;
     margin-bottom: 0.2rem;
     transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.yokai-hunters-society .attribute-card label:hover {
-    color: #b71c1c;
-    text-decoration: underline;
-}
-
-.yokai-hunters-society .main-stats-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    flex: 1 1 0%;
-}
-
-.yokai-hunters-society .section-attributes {
-    flex: 2 1 180px;
-    align-items: center;
-    min-width: 180px;
-    box-sizing: border-box;
-}
-
-.yokai-hunters-society .hp-money-wrapper {
-    flex: 1 1 140px;
-    min-width: 140px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    box-sizing: border-box;
 }
 
 .yokai-hunters-society .section-hp,
@@ -1089,13 +1110,11 @@
 }
 
 .text-area-div {
-  height: 100%;
   display: flex;
   flex-direction: column;  
 }
 
 .text-area {
-  height: 100%;
   width: 100%;
   box-sizing: border-box;
 }
@@ -1110,7 +1129,6 @@
         padding: 0.25rem;
     }
 
-    /* Mantener diseño horizontal (Row) pero permitir encogimiento */
     .main-content, .main-contenty, .main-contento {
         flex-direction: row;
         flex-wrap: nowrap;
@@ -1119,38 +1137,34 @@
         gap: 0.5%;
     }
 
-    /* Reducir tamaño de paneles laterales */
     .panel-left {
-        flex: 6 1 180px; /* Reducido de 350px */
+        flex: 6 1 180px;
         margin: 0.5%;
         padding: 1%;
     }
 
     .panel-right {
-        flex: 4 1 120px; /* Reducido de 250px */
+        flex: 4 1 120px;
         margin: 0.5%;
         padding: 1%;
     }
 
-    /* Contenedores internos en fila */
     .yokai-hunters-society .main-content-flex-container {
         flex-direction: row;
         flex-wrap: nowrap;
         gap: 0.25rem;
     }
     
-    /* Reducir anchos mínimos de columnas internas */
     .yokai-hunters-society .left-column-content,
     .yokai-hunters-society .section-equipment,
     .yokai-hunters-society .section-attributes,
     .yokai-hunters-society .hp-money-wrapper {
-        min-width: 0; /* Permitir encogerse */
-        flex-basis: auto; /* Dejar que flex decida */
+        min-width: 0;
+        flex-basis: auto;
     }
 
-    /* Escalar hacia abajo la cabecera y la imagen */
     .yokai-hunters-society .header-grid-with-image {
-        grid-template-columns: 50px 1fr 50px; /* Columnas más pequeñas */
+        grid-template-columns: 50px 1fr 50px;
         gap: 0.25rem;
     }
 
@@ -1159,7 +1173,6 @@
         height: 50px;
     }
     
-    /* Reducir fuentes y paddings generales */
     .yokai-hunters-society .label-text { font-size: 0.75rem; }
     .yokai-hunters-society .input-field, 
     .yokai-hunters-society .textarea-field,
@@ -1169,7 +1182,6 @@
     }
     .yokai-hunters-society .section-title { font-size: 0.9rem; }
 
-    /* Ajustes de inventario compactos */
     .yokai-hunters-society #inventory-list,
     .yokai-hunters-society #movimientos-list {
         min-height: 100px;
@@ -1180,7 +1192,6 @@
         padding: 0.1rem;
     }
 
-    /* Restaurar panel de edad/nivel si cabe */
     .yokai-hunters-society .character-age-panel {
         display: block;
     }
@@ -1215,5 +1226,110 @@
         width: 35px;
         height: 35px;
     }
+}
 
+.yhs-chat-card {
+    background-color: #f5f0e1;
+    border: 2px solid #6d4c41;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    font-family: 'Noto Sans JP', sans-serif;
+    overflow: hidden;
+    margin: 2px 0;
+    color: #3e2723;
+}
+
+.yhs-chat-header {
+    background: linear-gradient(to right, #880e4f, #b71c1c);
+    color: #fff;
+    padding: 4px 10px;
+    border-bottom: 2px solid #6d4c41;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.yhs-chat-header .roll-name {
+    font-family: 'Merriweather', serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.yhs-chat-header .roll-mod {
+    font-size: 0.85em;
+    opacity: 0.95;
+}
+
+.yhs-chat-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.yhs-dice-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.yhs-die {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #a1887f;
+    border-radius: 5px;
+    background: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.yhs-die.curse-die {
+    border-color: #ef9a9a;
+    background: #ffebee;
+    color: #b71c1c;
+    position: relative;
+}
+.yhs-die.curse-die::after {
+    content: '👹';
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    font-size: 0.75em;
+}
+.yhs-die.discarded { opacity: 0.5; text-decoration: line-through; background: #efebe9; color: #8d6e63; }
+
+.yhs-calc-row {
+    font-size: 0.85em;
+    color: #5d4037;
+    background: rgba(109, 76, 65, 0.05);
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+
+.yhs-result-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    padding-top: 5px;
+    border-top: 1px dashed #d7ccc8;
+}
+
+.yhs-total-result { font-size: 2.2em; font-weight: 800; color: #3e2723; line-height: 1; }
+.yhs-outcome-stamp { font-family: 'Merriweather', serif; font-weight: bold; text-transform: uppercase; font-size: 0.9em; padding: 4px 8px; border: 3px double; border-radius: 4px; transform: rotate(-3deg); letter-spacing: 1px; }
+.yhs-outcome-stamp.success { color: #2e7d32; border-color: #2e7d32; background: rgba(46, 125, 50, 0.05); }
+.yhs-outcome-stamp.warning { color: #ef6c00; border-color: #ef6c00; background: rgba(239, 108, 0, 0.05); }
+.yhs-outcome-stamp.failure { color: #c62828; border-color: #c62828; background: rgba(198, 40, 40, 0.05); }
+.yhs-curse-alert { margin-top: 4px; width: 100%; text-align: center; color: #b71c1c; font-weight: bold; font-size: 0.9em; animation: flash 2s infinite; }
+
+.chat-message:has(.yhs-chat-card) .dice-roll {
+    display: none;
 }

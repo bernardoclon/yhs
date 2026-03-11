@@ -1,7 +1,7 @@
 <form class="sheet-form" autocomplete="off">
     <div class="main-content">
         <div class="panel-left">
-            <div class="header-grid-with-image">
+            <div class="header-grid-with-image character-header">
                         <div class="character-image-container">
                             <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="Imagen del personaje"/>
                         </div>
@@ -16,19 +16,19 @@
                                    class="input-field" data-field="system.age">
                         </div>
                     </div>
-                    <div class="section-panel-default section-spacing text-area-div">
+                    <div class="section-panel-default section-spacing text-area-div character-look">
                         <label for="look" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Look"}}</label>
                         <textarea name="system.look" rows="3"
                                   class="input-field textarea-field text-area"
                                   placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Look'}}" data-field="system.look">{{system.look}}</textarea>
                     </div>
-                    <div class="section-panel-default section-spacing text-area-div">
+                    <div class="section-panel-default section-spacing text-area-div character-background">
                         <label for="background" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Background"}}</label>
                         <textarea name="system.background" rows="3"
                                   class="input-field textarea-field text-area"
                                   placeholder="{{localize 'YOKAIHUNTERSSOCIETY.Background'}}" data-field="system.background">{{system.background}}</textarea>
                     </div>
-                    <div class="section-curse-resistance section-spacing">
+                    <div class="section-curse-resistance section-spacing character-curse-resistance">
                         <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.CurseResistance"}}</h2>
                         <div class="curse-resistance-checkboxes">
                             <div class="checkbox-wrapper">
@@ -57,50 +57,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class="main-stats-container">
-                        <div class="section-attributes main-stats-item">
-                            <h2 class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Attributes"}}</h2>
-                            <div class="attributes-grid">
-                                <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="courage">{{localize "YOKAIHUNTERSSOCIETY.Courage"}}</label>
-                                    <input type="number" name="system.attributes.courage.value" value="{{system.attributes.courage.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.courage.value">
+                    <div class="section-attributes character-attributes">
+                        <h2 class="section-title text-on-dark">{{localize "YOKAIHUNTERSSOCIETY.Attributes"}}</h2>
+                        <div class="attributes-grid">
+                            <div class="attribute-card">
+                                <label class="label-text rollable-attribute" data-attribute="courage">{{localize "YOKAIHUNTERSSOCIETY.Courage"}}</label>
+                                <input type="number" name="system.attributes.courage.value" value="{{system.attributes.courage.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.courage.value">
+                            </div>
+                            <div class="attribute-card">
+                                <label class="label-text rollable-attribute" data-attribute="selfControl">{{localize "YOKAIHUNTERSSOCIETY.SelfControl"}}</label>
+                                <input type="number" name="system.attributes.selfControl.value" value="{{system.attributes.selfControl.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.selfControl.value">
+                            </div>
+                            <div class="attribute-card">
+                                <label class="label-text rollable-attribute" data-attribute="wisdom">{{localize "YOKAIHUNTERSSOCIETY.Wisdom"}}</label>
+                                <input type="number" name="system.attributes.wisdom.value" value="{{system.attributes.wisdom.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.wisdom.value">
+                            </div>
+                            <div class="attribute-card">
+                                <label class="label-text rollable-attribute" data-attribute="sharpness">{{localize "YOKAIHUNTERSSOCIETY.Sharpness"}}</label>
+                                <input type="number" name="system.attributes.sharpness.value" value="{{system.attributes.sharpness.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.sharpness.value">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hp-money-wrapper character-hp-money">
+                        <div class="section-hp">
+                            <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Health"}}</h2>
+                            <div class="hp-money-content">
+                                <div class="hp-input-group">
+                                    <label for="healthValue" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Current"}}</label>
+                                    <input type="number" name="system.health.value" value="{{system.health.value}}" class="hp-money-input" data-dtype="Number" data-field="system.health.value">
                                 </div>
-                                <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="selfControl">{{localize "YOKAIHUNTERSSOCIETY.SelfControl"}}</label>
-                                    <input type="number" name="system.attributes.selfControl.value" value="{{system.attributes.selfControl.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.selfControl.value">
-                                </div>
-                                <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="wisdom">{{localize "YOKAIHUNTERSSOCIETY.Wisdom"}}</label>
-                                    <input type="number" name="system.attributes.wisdom.value" value="{{system.attributes.wisdom.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.wisdom.value">
-                                </div>
-                                <div class="attribute-card">
-                                    <label class="label-text rollable-attribute" data-attribute="sharpness">{{localize "YOKAIHUNTERSSOCIETY.Sharpness"}}</label>
-                                    <input type="number" name="system.attributes.sharpness.value" value="{{system.attributes.sharpness.value}}" class="attr-input" data-dtype="Number" data-field="system.attributes.sharpness.value">
+                                <span class="hp-separator text-primary">/</span>
+                                <div class="hp-input-group">
+                                    <label for="healthMax" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Max"}}</label>
+                                    <input type="number" name="system.health.max" value="{{system.health.max}}" class="hp-money-input" data-dtype="Number" data-field="system.health.max">
                                 </div>
                             </div>
                         </div>
-                        <div class="hp-money-wrapper main-stats-item">
-                            <div class="section-hp">
-                                <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Health"}}</h2>
-                                <div class="hp-money-content">
-                                    <div class="hp-input-group">
-                                        <label for="healthValue" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Current"}}</label>
-                                        <input type="number" name="system.health.value" value="{{system.health.value}}" class="hp-money-input" data-dtype="Number" data-field="system.health.value">
-                                    </div>
-                                    <span class="hp-separator text-primary">/</span>
-                                    <div class="hp-input-group">
-                                        <label for="healthMax" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Max"}}</label>
-                                        <input type="number" name="system.health.max" value="{{system.health.max}}" class="hp-money-input" data-dtype="Number" data-field="system.health.max">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="section-money">
-                                <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Money"}}</h2>
-                                <div class="hp-money-content">
-                                    <div class="hp-input-group">
-                                        <label for="money" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Money"}}</label>
-                                        <input type="number" name="system.money" value="{{system.money}}" class="hp-money-input" data-dtype="Number" data-field="system.money">
-                                    </div>
+                        <div class="section-money">
+                            <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Money"}}</h2>
+                            <div class="hp-money-content">
+                                <div class="hp-input-group">
+                                    <label for="money" class="label-text">{{localize "YOKAIHUNTERSSOCIETY.Money"}}</label>
+                                    <input type="number" name="system.money" value="{{system.money}}" class="hp-money-input" data-dtype="Number" data-field="system.money">
                                 </div>
                             </div>
                         </div>

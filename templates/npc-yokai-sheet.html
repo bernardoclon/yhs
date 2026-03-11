@@ -1,7 +1,7 @@
 <form class="sheet-form" autocomplete="off">
         <div class="main-contenty">
             <div class="panel-left">
-                <div class="header-grid-with-image">
+                <div class="header-grid-with-image npc-header">
                     <div class="character-image-container">
                         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="Imagen del personaje"/>
                     </div>
@@ -16,7 +16,7 @@
                             class="input-field">
                     </div>
                 </div>
-                <div class="section-panel-default section-spacing">
+                <div class="section-panel-default section-spacing npc-health">
                     <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Health"}}</h2>
                     <div class="hp-money-content">
                         <div class="hp-input-group">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="section-panel-default section-spacing">
+                <div class="section-panel-default section-spacing npc-description">
                     <h2 class="section-title text-primary">{{localize "YOKAIHUNTERSSOCIETY.Description"}}</h2>
                     <textarea name="system.description" class="textarea-field" rows="5">{{system.description}}</textarea>
                 </div>

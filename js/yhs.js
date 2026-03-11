@@ -455,9 +455,26 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
                         const baseRoll = new Roll(baseDiceFormula);
                         await baseRoll.evaluate();
 
-                        let customRollDisplayHtml = `<div class="yokai-hunters-society sheet actor roll-display-container">`;
-                        let finalDiceSum = 0;
+                        // Compact layout structure
+                        let customRollDisplayHtml = `<div class="yhs-chat-card">`;
+                        
+                        // Header
+                        const rollLabel = isCurseRoll ? game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseRoll") : localizedAttributeName;
+                        customRollDisplayHtml += `<div class="yhs-chat-header"><span class="roll-name">${rollLabel}</span>`;
+                        
                         let rollObjectsForFoundry = [baseRoll]; // Array for Foundry's Dice So Nice and sound
+                        let finalDiceSum = 0;
+                        let allDiceResultsDisplay = [];
+
+                        if (rollType !== "normal" && !isCurseRoll) {
+                            const modLabel = rollType === "advantage" ? game.i18n.localize("YOKAIHUNTERSSOCIETY.WithAdvantage") : game.i18n.localize("YOKAIHUNTERSSOCIETY.WithDisadvantage");
+                            customRollDisplayHtml += `<span class="roll-mod">${modLabel}</span>`;
+                        } else if (isCurseRoll) {
+                             customRollDisplayHtml += `<span class="roll-mod">(${localizedAttributeName})</span>`;
+                        }
+                        customRollDisplayHtml += `</div>`; // End Header
+
+                        customRollDisplayHtml += `<div class="yhs-chat-content">`;
 
                         if (isCurseRoll) {
                             // Curse Roll Logic: 2d6 + 1d8, drop lowest.
@@ -491,21 +508,17 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
                                 allDiceResultsForTotal[0].discarded = true;
                             }
 
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseRoll")}:</div>`; // Usar la función de localización de Foundry
-                            customRollDisplayHtml += `<div class="roll-components-group">`;
-
+                            allDiceResultsDisplay = allDiceResultsForTotal;
+                            
+                            // Calculate final sum
                             allDiceResultsForTotal.forEach(die => {
-                                const discardedClass = die.discarded ? 'discarded-die' : '';
-                                const curseDieClass = die.type === 'curse' ? 'curse-die-roll' : '';
-                                customRollDisplayHtml += `<div class="roll-component-tile ${discardedClass} ${curseDieClass}">${die.value}</div>`;
-                                if (!die.discarded) {
-                                    finalDiceSum += die.value;
-                                }
+                                if (!die.discarded) finalDiceSum += die.value;
                             });
-                            customRollDisplayHtml += `</div>`;
 
                             // Curse Resistance Logic: Uncheck one resistance if 1d8 roll is higher than checked resistances.
-                            if (curseRollResultForResistanceCheck > checkedCurseResistancesCount) {
+                            const curseFailed = curseRollResultForResistanceCheck > checkedCurseResistancesCount;
+                            
+                            if (curseFailed) {
                                 let updatedCurseResistances = { ...curseResistances };
                                 let uncheckedOne = false;
                                 for (const key in updatedCurseResistances) {
@@ -518,56 +531,65 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
 
                                 if (uncheckedOne) {
                                     await this.actor.update({ 'system.curseResistance': updatedCurseResistances });
-                                    customRollDisplayHtml += `<div class="roll-message-alert">${game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseHasFallen")}</div>`; // Usar la función de localización de Foundry
+                                }
+                                
+                                // Add alert to display if curse resistance was actually consumed (count > 0)
+                                if (checkedCurseResistancesCount > 0) {
+                                    customRollDisplayHtml += `<div class="yhs-curse-alert">${game.i18n.localize("YOKAIHUNTERSSOCIETY.CurseHasFallen")}</div>`;
                                 }
                             }
 
                         } else {
-                            // Standard Roll Display (no curse roll).
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Roll")} ${rollType === "advantage" ? game.i18n.localize("YOKAIHUNTERSSOCIETY.WithAdvantage") : (rollType === "disadvantage" ? game.i18n.localize("YOKAIHUNTERSSOCIETY.WithDisadvantage") : game.i18n.localize("YOKAIHUNTERSSOCIETY.Normal"))}:</div>`; // Usar la función de localización de Foundry
-                            customRollDisplayHtml += `<div class="roll-components-group">`;
+                            // Standard Roll
                             baseRoll.dice.forEach(die => {
                                 die.results.forEach(result => {
-                                    const discardedClass = result.discarded ? 'discarded-die' : '';
-                                    customRollDisplayHtml += `<div class="roll-component-tile ${discardedClass}">${result.result}</div>`;
+                                    allDiceResultsDisplay.push({ value: result.result, type: 'base', discarded: result.discarded });
                                 });
                             });
-                            customRollDisplayHtml += `</div>`;
                             finalDiceSum = baseRoll.total;
                         }
 
-                        // Display base attribute value.
-                        customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Attribute")}:</div><div class="roll-components-group"><div class="roll-component-tile">${attributeBaseValue}</div></div>`; // Usar la función de localización de Foundry
-
-                        // Display encumbrance penalty if applicable.
-                        if (encumbrancePenalty !== 0) {
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.EncumbrancePenalty")}:</div><div class="roll-components-group"><div class="roll-component-tile">${-encumbrancePenalty}</div></div>`; // Usar la función de localización de Foundry
-                        }
-
-                        // Display selected equipment bonus.
-                        if (selectedEquipmentBonus !== 0) {
-                            customRollDisplayHtml += `<div class="roll-component-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.Equipment")}:</div><div class="roll-components-group"><div class="roll-component-tile">${selectedEquipmentBonus >= 0 ? '+' : ''}${selectedEquipmentBonus}</div></div>`; // Usar la función de localización de Foundry
-                        }
+                        // Display Dice Row
+                        customRollDisplayHtml += `<div class="yhs-dice-row">`;
+                        allDiceResultsDisplay.forEach(die => {
+                            const discardedClass = die.discarded ? 'discarded' : '';
+                            const curseClass = die.type === 'curse' ? 'curse-die' : '';
+                            customRollDisplayHtml += `<span class="yhs-die ${curseClass} ${discardedClass}">${die.value}</span>`;
+                        });
+                        customRollDisplayHtml += `</div>`;
 
                         // Calculate and display the final total result.
                         let totalResult = finalDiceSum + attributeValueWithPenalty + selectedEquipmentBonus;
-                        customRollDisplayHtml += `<div class="roll-total-label">${game.i18n.localize("YOKAIHUNTERSSOCIETY.TotalResult")}:</div><div class="roll-components-group"><div class="roll-component-tile total-result">${totalResult}</div></div>`; // Usar la función de localización de Foundry
+                        
+                        // Calculation Info Row
+                        customRollDisplayHtml += `<div class="yhs-calc-row">`;
+                        customRollDisplayHtml += `${finalDiceSum} <span style="color:#a1887f; font-size:0.9em;">(D)</span>`;
+                        customRollDisplayHtml += ` + ${attributeBaseValue} <span style="color:#a1887f; font-size:0.9em;">(Attr)</span>`;
+                        if (selectedEquipmentBonus !== 0) customRollDisplayHtml += ` + ${selectedEquipmentBonus} <span style="color:#a1887f; font-size:0.9em;">(Eq)</span>`;
+                        if (encumbrancePenalty !== 0) customRollDisplayHtml += ` - ${Math.abs(encumbrancePenalty)} <span style="color:#a1887f; font-size:0.9em;">(Carga)</span>`;
+                        customRollDisplayHtml += `</div>`;
 
                         // Determine and display roll outcome (Success, Bad Omen, Failure).
                         let outcomeMessage = "";
                         let outcomeClass = "";
+                        let stampClass = "";
                         if (totalResult > 9) {
                             outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.Success"); // Usar la función de localización de Foundry
-                            outcomeClass = "roll-outcome-message--success";
+                            stampClass = "success";
                         } else if (totalResult === 9) {
                             outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.BadOmen"); // Usar la función de localización de Foundry
-                            outcomeClass = "roll-outcome-message--warning";
+                            stampClass = "warning";
                         } else { // totalResult <= 8
                             outcomeMessage = game.i18n.localize("YOKAIHUNTERSSOCIETY.Failure"); // Usar la función de localización de Foundry
-                            outcomeClass = "roll-outcome-message--failure";
+                            stampClass = "failure";
                         }
-                        customRollDisplayHtml += `<div class="roll-outcome-message ${outcomeClass}">${outcomeMessage}</div>`;
-                        customRollDisplayHtml += `</div></div>`; // Close roll-display-container and root container
+                        
+                        customRollDisplayHtml += `<div class="yhs-result-container">`;
+                        customRollDisplayHtml += `<span class="yhs-total-result">${totalResult}</span>`;
+                        customRollDisplayHtml += `<div class="yhs-outcome-stamp ${stampClass}">${outcomeMessage}</div>`;
+                        customRollDisplayHtml += `</div>`;
+                        
+                        customRollDisplayHtml += `</div></div>`; // Close content and card
 
                         // Create the chat message with the custom display and roll objects for Foundry's features.
                         await ChatMessage.create({
