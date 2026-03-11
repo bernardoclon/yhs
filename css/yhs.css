@@ -1333,3 +1333,7 @@
 .chat-message:has(.yhs-chat-card) .dice-roll {
     display: none;
 }
+
+.app.window-app.dialog .window-content {
+    padding: 0;
+}
