@@ -46,14 +46,6 @@
   "url": "https://raw.githubusercontent.com/bernardoclon/yhs",
   "manifest": "https://raw.githubusercontent.com/bernardoclon/yhs/refs/heads/main/system.json",
   "download": "https://github.com/bernardoclon/yhs/archive/refs/tags/V1-5.zip",
-  "media": [
-    {
-      "type": "setup",
-      "thumbnail": "systems/yokai-hunters-society/art/banner.jpg",
-      "loop": false,
-      "flags": {}
-    }
-  ],
-  "background": "systems/yokai-hunters-society/art/banner.webp",
+  "background": "systems/yokai-hunters-society/art/banner.jpg",
   "flags": {}
 }
