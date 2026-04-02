@@ -413,8 +413,6 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
                             ${equipmentItems.map(item => `<option value="${item.system.bonus}">${item.name} (${item.system.bonus >= 0 ? '+' : ''}${item.system.bonus})</option>`).join('')}
                         </select>
                     </div>
-                    <div class="form-group"></div>
-                    <div class="form-group"></div>
                     </div>
                 </form>
             </div>
@@ -425,6 +423,7 @@ class YokaiHunterSheet extends foundry.appv1.sheets.ActorSheet { // Usar la ruta
             title: `${game.i18n.localize("YOKAIHUNTERSSOCIETY.RollOf")} ${localizedAttributeName}`, // Usar la función de localización de Foundry
             content: dialogContent,
             classes: ["yokai-hunters-society", "sheet", "actor"],
+            height: "auto",
             buttons: {
                 roll: {
                     icon: '<i class="fas fa-dice-d20"></i>',
@@ -812,8 +811,8 @@ class YokaiHunterItemSheet extends foundry.appv1.sheets.ItemSheet { // Usar la r
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: "systems/yokai-hunters-society/templates/item-sheet.html",
             classes: ["yokai-hunters-society", "sheet", "item"],
-            width: 500,
-            height: 395,
+            width: 355,
+            height: 370,
             resizable: true,
         });
     }
@@ -857,6 +856,19 @@ class YokaiHunterItemSheet extends foundry.appv1.sheets.ItemSheet { // Usar la r
         // Add specific listeners for the item sheet here if needed.
     }
 }
+
+/**
+ * Hoja específica para movimientos con un tamaño más compacto.
+ */
+class YokaiMovimientoItemSheet extends YokaiHunterItemSheet {
+    static get defaultOptions() {
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            classes: ["yokai-hunters-society", "sheet", "item", "type-movimiento"],
+            height: 290
+        });
+    }
+}
+
 
 /**
  * Extends the ActorSheet class from Foundry VTT to create a custom NPC/Yokai sheet.
@@ -1124,9 +1136,9 @@ Hooks.on("init", function() {
     });
 
     // Register the custom item sheet for the 'movimiento' type, reusing the same sheet class.
-    foundry.documents.collections.Items.registerSheet("yokai-hunters-society", YokaiHunterItemSheet, {
+    foundry.documents.collections.Items.registerSheet("yokai-hunters-society", YokaiMovimientoItemSheet, {
         types: ["movimiento"],
-        makeDefault: false,
+        makeDefault: true,
         label: "Movimiento Sheet"
     });
 

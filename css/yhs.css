@@ -15,6 +15,10 @@
     min-height: 370px;
 }
 
+.app.window-app.yokai-hunters-society.sheet.item.type-movimiento {
+    min-height: 290px;
+}
+
 .app.window-app.yokai-hunters-society.sheet .window-content {
     padding: 0;
     background: transparent;
@@ -56,11 +60,10 @@
 .main-contentd{
     display: flex;
     flex-direction: column;
-    min-height: 100%;
-    background-image: url('../art/border4.jpg');
-    background-size: cover;
-    gap: 1%;
-    padding: 5%;
+    width: 100%;
+    gap: 0;
+    background: transparent;
+    padding: 0;
 }
 
 .panel-yokai{
@@ -861,34 +864,60 @@
 }
 
 .app.window-app.dialog .window-content {
-    background-color: #fffaf0;
-    padding: 0.6rem;
+    background-color: #f5f0e1; /* Fondo pergamino del sistema */
     font-family: 'Noto Sans JP', sans-serif;
     color: #3e2723;
     border: 1px solid #a1887f;
     border-top: none;
-    border-bottom-left-radius: 0.4rem;
-    border-bottom-right-radius: 0.4rem;
+    border-radius: 0 0 0.4rem 0.4rem;
     overflow-y: auto;
     box-sizing: border-box;
+    text-align: center;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.app.window-app.dialog .dialog-content {
+    padding: 1.5rem 1rem;
+    max-width: 320px; 
+    margin: 0 auto;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.app.window-app.dialog .dialog-content:has(.dialog-roll-container) {
+    max-width: none;
+    width: 100%; 
+    padding: 0;
+    overflow: hidden;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .yokai-hunters-society.sheet.actor.dialog-roll-container {
-    padding: 0;
-    margin: 0 auto;
+    padding: 12px 18px;
+    background-image: url('../art/border4.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0;
     text-align: center;
+    border-bottom: 2px solid #6d4c41;
 }
 
 .yokai-hunters-society.sheet.actor.dialog-roll-container .form-group {
-    margin-bottom: 0.5rem;
-    border-bottom: 1px dashed #d7ccc8;
-    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+    border-bottom: 1px dashed rgba(161, 136, 127, 0.4);
+    padding: 8px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container .form-group:last-of-type {
     border-bottom: none;
@@ -896,108 +925,94 @@
     padding-bottom: 0;
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container label {
+    font-family: 'Merriweather', serif;
     font-weight: bold;
-    color: #5d4037;
-    margin-bottom: 0.2rem;
+    color: #b71c1c;
+    margin-bottom: 4px;
     display: block;
     font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container .form-fields {
     display: flex;
-    flex-wrap: nowrap;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 0.3em;
+    gap: 6px;
+    width: 100%;
 }
 
-.yokai-hunters-society.sheet.actor.dialog-roll-container input[type="radio"] {
-    margin-right: 0.2rem;
-    appearance: none;
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #a1887f;
-    border-radius: 50%;
-    outline: none;
-    cursor: pointer;
-    background-color: #efebe9;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-    position: relative;
-    flex-shrink: 0;
-}
-
-.yokai-hunters-society.sheet.actor.dialog-roll-container input[type="radio"]:checked {
-    background-color: #b71c1c;
-    border-color: #880e4f;
-}
-
-.yokai-hunters-society.sheet.actor.dialog-roll-container input[type="radio"]:checked::before {
-    content: '';
-    display: block;
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.yokai-hunters-society.sheet.actor.dialog-roll-container .form-fields div {
+    flex: 1;
 }
 
 .yokai-hunters-society.sheet.actor.dialog-roll-container .form-fields label {
-    display: flex;
-    align-items: center;
-    flex-shrink: 1;
-    flex-grow: 1;
-    gap: 0.2em;
-    font-weight: normal;
-    padding: 0.3rem 0.5rem;
-    border-radius: 0.4rem;
-    transition: background-color 0.2s ease;
-    background-color: #fcfaf5;
-    border: 1px solid #d7ccc8;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #a1887f;
+    color: #4e342e;
+    padding: 4px 2px;
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 0.65rem;
     cursor: pointer;
-    min-width: 0;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+    margin: 0;
+    display: block;
+    text-align: center;
 }
 
-.yokai-hunters-society.sheet.actor.dialog-roll-container .form-fields label:hover {
-    background-color: #f0e0d6;
+.yokai-hunters-society.sheet.actor.dialog-roll-container .form-fields input[type="radio"] {
+    display: none;
 }
 
+.yokai-hunters-society.sheet.actor.dialog-roll-container .form-fields label:has(input:checked) {
+    background-color: #b71c1c;
+    color: #ffffff;
+    border-color: #4d0101;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
 
 .yokai-hunters-society.sheet.actor.dialog-roll-container .checkbox-label {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.8rem;
+    gap: 4px;
     cursor: pointer;
-    font-weight: normal;
-    font-size: 0.9rem;
+    font-weight: bold;
+    color: #b71c1c;
+    font-family: 'Merriweather', serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container .curse-checkbox-dialog {
     display: none;
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container .curse-visual-checkbox-dialog {
-    width: 60px;
-    height: 60px;
-    border: 1px solid #a1887f;
-    border-radius: 0.8rem;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #a1887f;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #efebe9;
+    background-color: rgba(239, 235, 233, 0.6);
     transition: all 0.2s ease;
     flex-shrink: 0;
     opacity: 0.6;
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container .curse-checkbox-dialog:checked + .curse-visual-checkbox-dialog {
-    background-color: transparent;
-    border-color: #a1887f;
+    background-color: #ffcdd2;
+    border-color: #b71c1c;
     opacity: 1;
+    box-shadow: 0 0 10px rgba(183, 28, 28, 0.3);
 }
 
 .yokai-hunters-society.sheet.actor.dialog-roll-container .curse-icon-img-dialog {
-    width: 50px;
-    height: 50px;
+    width: 28px;
+    height: 28px;
     filter: grayscale(100%) brightness(0.8);
     transition: filter 0.2s ease;
     display: block;
@@ -1007,35 +1022,41 @@
     filter: grayscale(0%) brightness(1);
 }
 .yokai-hunters-society.sheet.actor.dialog-roll-container select {
-    width: 100%;
-    padding: 0.3rem;
+    width: 85%;
+    height: 26px;
+    padding: 0 4px;
     border: 1px solid #a1887f;
-    border-radius: 0.2rem;
-    background-color: #fffaf0;
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.8);
     font-size: 0.8rem;
-    color: #3e2723;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #4e342e;
     text-align: center;
 }
 
 .app.window-app.dialog .dialog-buttons {
     display: flex;
-    justify-content: space-around;
-    padding: 0.6rem;
-    background-color: #f5f0e1;
-    border-top: 1px solid #a1887f;
+    justify-content: stretch;
+    gap: 10px;
+    padding: 8px 15px;
+    background-color: #efebe9;
+    flex: 0 0 auto;
+    border-top: 1px dashed #a1887f;
     border-bottom-left-radius: 0.4rem;
     border-bottom-right-radius: 0.4rem;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
 
 .app.window-app.dialog .dialog-button {
-    background-color: #6d4c41;
+    flex: 1;
+    background-color: #5d4037;
     color: white;
-    border: none;
-    border-radius: 0.2rem;
-    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    padding: 4px 8px;
     cursor: pointer;
-    font-size: 1rem;
+    font-family: 'Merriweather', serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
     transition: background-color 0.2s ease, transform 0.1s ease;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -1044,13 +1065,18 @@
     gap: 0.2rem;
 }
 
-.app.window-app.dialog .dialog-button i {
-    font-size: 0.8em;
-}
-
-.app.window-app.dialog .dialog-button:hover {
+.app.window-app.dialog .dialog-button:hover,
+.app.window-app.dialog .dialog-button.no:hover {
     background-color: #4e342e;
     transform: translateY(-1px);
+}
+
+.app.window-app.dialog .dialog-button.yes {
+    background-color: #b71c1c; /* Rojo de acción del sistema */
+}
+
+.app.window-app.dialog .dialog-button.yes:hover {
+    background-color: #8a1515;
 }
 
 .app.window-app.dialog .dialog-button:active {
@@ -1079,8 +1105,8 @@
 
 .yokai-hunters-society.sheet.actor.npc-yokai .movements-grid-header .add-item-btn {
     font-size: 0.75rem;
-    align-content: center;
-    padding-right: 0;
+    text-align: center;
+    padding: 0.2rem 0;
     margin-right: 0;
     width: 48px;
 }
@@ -1112,6 +1138,7 @@
 .text-area-div {
   display: flex;
   flex-direction: column;  
+  flex-grow: 1;
 }
 
 .text-area {
@@ -1332,8 +1359,4 @@
 
 .chat-message:has(.yhs-chat-card) .dice-roll {
     display: none;
-}
-
-.app.window-app.dialog .window-content {
-    padding: 0;
 }
