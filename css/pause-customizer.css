@@ -1,0 +1,35 @@
+/* Logo de Pausa Cambiado y Titilante*/
+
+img.fa-spin {
+    width: 150px; /* Ajusta el tamaño */
+    height: 150px;
+    animation: pulsate 3s infinite ease-in-out, none !important; /* Añade el parpadeo */
+    opacity: 0.75; /* Transparencia inicial */
+  }
+  
+  @keyframes pulsate {
+    0% {
+        filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
+    }
+    50% {
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+    100% {
+        filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
+    }
+  }
+  
+  #pause figcaption {
+    color: var(--color-text-light-0);
+    font-size: 30px;
+    text-shadow: 2px 2px 2px var(--color-shadow-dark);
+    font-family: var(--dnd5e-font-modesto);
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #pause {
+    background: none !important;
+  }
